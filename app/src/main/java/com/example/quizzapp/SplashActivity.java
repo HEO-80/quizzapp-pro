@@ -12,7 +12,10 @@ import java.util.List;
 /**
  * Clase SplashActivity que hereda de AppCompatActivity.
  * Muestra una pantalla de bienvenida y carga las preguntas del cuestionario.
+ *
  */
+
+//Derivar esta clase a base de datos SQL
 public class SplashActivity extends AppCompatActivity {
     public static ArrayList<ModelClass> list;
 

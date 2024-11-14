@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_250sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardBackgroundColor="#ff9999"
+    android:layout_gravity="center"
+    android:layout_height="@dimen/_200sdp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ooops Se acabo el tiempo."
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:textSize="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"/>
+
+    <ImageView
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:background="@drawable/baseline_timer_24"
+        android:layout_marginTop="@dimen/_30sdp"/>
+
+        <LinearLayout
+            android:id="@+id/btn_tryAgain"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center"
+            android:background="@drawable/tmout_btn_shape">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Intentar de nuevo"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_20sdp"
+                android:gravity="center"/>
+    </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

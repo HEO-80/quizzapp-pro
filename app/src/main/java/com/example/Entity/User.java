@@ -1,4 +1,4 @@
-package com.example.quizzapp;
+package com.example.Entity;
 
 import java.util.Date;
 import java.util.List;

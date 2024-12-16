@@ -4,6 +4,9 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -13,9 +16,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.Api.ApiClient;
+import com.example.Api.UserAnswerApi;
+import com.example.Entity.UserAnswer;
+
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 
 
 /**
@@ -310,4 +319,29 @@ public class DashboardActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void submitAnswer(Long quizId, Long questionId, String userAnswer, boolean isCorrect) {
+        UserAnswerApi userAnswerApi = ApiClient.getRetrofitInstance().create(UserAnswerApi.class);
+
+        // Suponiendo que tienes el ID del usuario autenticado
+        Long userId = getCurrentUserId(); // Implementa este método para obtener el ID del usuario actual
+        UserAnswer answer = new UserAnswer(quizId, questionId, userId, userAnswer, isCorrect);
+
+        userAnswerApi.createUserAnswer(answer).enqueue(new Callback<UserAnswer>() {
+            @Override
+            public void onResponse(Call<UserAnswer> call, Response<UserAnswer> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(DashboardActivity.this, "Respuesta registrada correctamente", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(DashboardActivity.this, "Error al registrar la respuesta: " + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserAnswer> call, Throwable t) {
+                Toast.makeText(DashboardActivity.this, "Error de red al registrar la respuesta", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

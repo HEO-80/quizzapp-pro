@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,106 +10,109 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_centerInParent="true">
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ffff"
+            android:orientation="vertical"
             android:gravity="center"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textSize="@dimen/_20sdp"
-            android:text="@string/user_name"/>
+            android:layout_centerInParent="true">
 
-        <ImageView
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="@dimen/_150sdp"
-            android:background="@drawable/logo1"
-            android:layout_centerInParent="true"/>
+            <!-- Nombre de usuario actual -->
+            <TextView
+                android:id="@+id/user_name_display"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:text="Usuario actual: guest" />
 
-        <ImageView
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_120sdp"
-            android:background="@drawable/logo2"
-            android:layout_centerInParent="true"/>
+            <!-- Nombre de usuario -->
+<!--            <TextView-->
+<!--                android:id="@+id/tvUsername"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:textSize="16sp"-->
+<!--                android:text="Usuario: " />-->
 
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textColor="#B547E6"-->
-<!--            android:gravity="center"-->
-<!--            android:layout_marginTop="@dimen/_10sdp"-->
-<!--            android:textSize="@dimen/_32sdp"-->
-<!--            android:text="@string/app_name"/>-->
+            <!-- Logos -->
+            <ImageView
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:background="@drawable/logo1"
+                android:layout_marginTop="20dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#B547E6"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textSize="@dimen/_20sdp"
-            android:text="@string/app_name2"/>
+            <ImageView
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:background="@drawable/logo2"
+                android:layout_marginTop="10dp" />
 
-        <Button
-            android:id="@+id/btnStart"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_40sdp"
-            android:background="@drawable/share_shape"
-            android:gravity="center"
-            android:text="Empezar"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_24sdp" />
-        <Button
-            android:id="@+id/btnCategory"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_40sdp"
-            android:background="@drawable/share_shape"
-            android:gravity="center"
-            android:text="Categorias"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_24sdp" />
+            <!-- Botones -->
+            <Button
+                android:id="@+id/btnStart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_40sdp"
+                android:background="@drawable/share_shape"
+                android:gravity="center"
+                android:text="Empezar"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
 
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_40sdp"
-            android:background="@drawable/share_shape"
-            android:gravity="center"
-            android:text="Iniciar Sesión"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_24sdp" />
+            <Button
+                android:id="@+id/btnCategory"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_40sdp"
+                android:background="@drawable/share_shape"
+                android:gravity="center"
+                android:text="Categorías"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
 
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/_35sdp"
-            android:layout_marginLeft="@dimen/_35sdp"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:layout_marginEnd="@dimen/_35sdp"
-            android:layout_marginRight="@dimen/_35sdp"
-            app:adSize="BANNER"
-            app:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_40sdp"
+                android:background="@drawable/share_shape"
+                android:gravity="center"
+                android:text="Iniciar Sesión"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_40sdp"
+                android:background="@drawable/share_shape"
+                android:gravity="center"
+                android:text="Cerrar Sesión"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
 
+            <!-- Banner de Google Ads -->
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                app:adSize="BANNER"
+                app:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+        </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>

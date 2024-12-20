@@ -2,55 +2,62 @@ package com.example.quizzapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.Utils.SessionManager;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
     private Button btnLoginSubmit;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Inicializa el SessionManager y las vistas
+        sessionManager = new SessionManager(this);
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLoginSubmit = findViewById(R.id.btnLoginSubmit);
 
-        btnLoginSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String username = etUsername.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
+        // Configura el botón para manejar el inicio de sesión
+        btnLoginSubmit.setOnClickListener(v -> {
+            String username = etUsername.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(LoginActivity.this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show();
+            if (validateCredentials(username, password)) {
+                if ("guest".equals(username)) {
+                    // No guarda las credenciales de invitados
+                    Toast.makeText(LoginActivity.this, "Sesión iniciada como Invitado", Toast.LENGTH_SHORT).show();
                 } else {
-                    authenticateUser(username, password);
+                    // Guarda las credenciales en SessionManager
+                    sessionManager.saveUser(username, password);
+                    Toast.makeText(LoginActivity.this, "Sesión iniciada como " + username, Toast.LENGTH_SHORT).show();
                 }
+
+                // Navega de regreso a la pantalla de inicio
+                Intent intent = new Intent(LoginActivity.this, StartActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(LoginActivity.this, "Credenciales inválidas", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void authenticateUser(String username, String password) {
-        // Aquí podrías implementar una llamada a la API para autenticar al usuario.
-        // Ejemplo de lógica local para prueba:
-        if (username.equals("invitado") && password.equals("1234")) {
-            Toast.makeText(this, "Inicio de sesión exitoso como invitado.", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("username", "Invitado");
-            startActivity(intent);
-            finish();
-        } else {
-            // En un escenario real, verifica las credenciales contra tu API o base de datos.
-            Toast.makeText(this, "Usuario o contraseña incorrectos.", Toast.LENGTH_SHORT).show();
-        }
+    /**
+     * Valida las credenciales del usuario.
+     * Si es el usuario invitado, devuelve true.
+     * Si es otro usuario, verifica que el nombre no esté vacío.
+     */
+    private boolean validateCredentials(String username, String password) {
+        return ("guest".equals(username) && "guest".equals(password)) || (!username.isEmpty() && !password.isEmpty());
     }
 }

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.example.Entity.Question;
+import com.example.Utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,12 +31,21 @@ public class DashboardActivity extends AppCompatActivity {
     private final int questionLimit = 20;
     private boolean isOptionSelected = false;
 
+    TextView userNameDisplay;
+    SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
         Hooks();
+
+        sessionManager = new SessionManager(this);
+
+        // Mostrar usuario actual
+        userNameDisplay = findViewById(R.id.user_name_display);
+        userNameDisplay.setText("Usuario: " + sessionManager.getUsername());
 
         // Validación de preguntas recibidas
         Intent intent = getIntent();

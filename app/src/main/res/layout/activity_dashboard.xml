@@ -35,6 +35,16 @@
                     android:textSize="18sp" />
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/user_name_display"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:text="Usuario actual: guest" />
+
             <!-- Tarjeta para la pregunta -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_question"

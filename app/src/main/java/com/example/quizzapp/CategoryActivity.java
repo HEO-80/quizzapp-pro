@@ -53,7 +53,9 @@ public class CategoryActivity extends AppCompatActivity {
                     List<Question> filteredQuestions = filterQuestionsByCategory(response.body(), category);
 
                     Intent intent = new Intent(CategoryActivity.this, DashboardActivity.class);
-                    intent.putExtra("questionsList", (ArrayList<Question>) filteredQuestions);
+//                    intent.putExtra("questionsList", (ArrayList<Question>) filteredQuestions);
+                    intent.putExtra("questionsList", new ArrayList<>(filteredQuestions));
+
                     startActivity(intent);
                 }
             }

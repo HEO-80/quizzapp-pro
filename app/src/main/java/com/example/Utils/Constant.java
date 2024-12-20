@@ -6,7 +6,7 @@ package com.example.Utils;
 public class Constant {
 
     // Base URL de la API
-    public static final String BASE_URL = "http://192.168.0.100:8081/api/"; // Asegúrate de usar la IP de tu servidor local o dominio en producción.
+    public static final String BASE_URL = "http://192.168.1.136:8081/api/"; // Asegúrate de usar la IP de tu servidor local o dominio en producción.
 
     // Endpoints
     public static final String USERS_ENDPOINT = "users";

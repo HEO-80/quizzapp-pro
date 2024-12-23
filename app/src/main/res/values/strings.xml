@@ -2,4 +2,5 @@
     <string name="app_name">Quiz App</string>
     <string name="app_name2">Select</string>
     <string name="user_name">User</string>
+    <string name="result_image">string</string>
 </resources>

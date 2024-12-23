@@ -15,6 +15,7 @@ import com.example.Utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -50,22 +51,27 @@ public class DashboardActivity extends AppCompatActivity {
         // Validación de preguntas recibidas
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("questionsList")) {
+            // Obtener la lista de preguntas filtradas por categoría
             ArrayList<Question> questionsList = (ArrayList<Question>) intent.getSerializableExtra("questionsList");
 
             if (questionsList != null && !questionsList.isEmpty()) {
                 allQuestionsList = questionsList;
-                Collections.shuffle(allQuestionsList);
+                ensureEnoughQuestions(); // Asegurar suficientes preguntas
+                Collections.shuffle(allQuestionsList); // Mezclar preguntas
                 currentQuestion = allQuestionsList.get(index);
-                setAllData();
+                setAllData(); // Configurar la primera pregunta
             } else {
-                Toast.makeText(this, "No hay preguntas disponibles.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No hay preguntas disponibles para esta categoría.", Toast.LENGTH_SHORT).show();
+                finish(); // Salir si no hay preguntas
             }
         } else {
             Toast.makeText(this, "Error al cargar preguntas.", Toast.LENGTH_SHORT).show();
+            finish(); // Salir si no se reciben preguntas
         }
 
         nextBtn_question.setOnClickListener(view -> navigateToNextQuestion());
     }
+
 
     private void Hooks() {
         card_question = findViewById(R.id.card_question_text); // TextView dentro del CardView
@@ -84,38 +90,24 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
 
-
-//    private void Hooks() {
-//        card_question = findViewById(R.id.card_question);
-//        optionA = findViewById(R.id.card_optionA);
-//        optionB = findViewById(R.id.card_optionB);
-//        optionC = findViewById(R.id.card_optionC);
-//        optionD = findViewById(R.id.card_optionD);
-//
-//        cardOA = findViewById(R.id.cardA);
-//        cardOB = findViewById(R.id.cardB);
-//        cardOC = findViewById(R.id.cardC);
-//        cardOD = findViewById(R.id.cardD);
-//
-//        nextBtn_question = findViewById(R.id.nextBtn_question);
-//        questionNumber = findViewById(R.id.question_number);
+//    private void setAllData() {
+//        questionNumber.setText(String.format("%d/%d", index + 1, questionLimit));
+//        card_question.setText(currentQuestion.getQuestionText());
+//        optionA.setText(currentQuestion.getOption1());
+//        optionB.setText(currentQuestion.getOption2());
+//        optionC.setText(currentQuestion.getOption3());
+//        optionD.setText(currentQuestion.getOption4());
 //    }
 
     private void setAllData() {
+        shuffleOptions(currentQuestion); // Mezclar las opciones antes de mostrarlas
+
         questionNumber.setText(String.format("%d/%d", index + 1, questionLimit));
         card_question.setText(currentQuestion.getQuestionText());
         optionA.setText(currentQuestion.getOption1());
         optionB.setText(currentQuestion.getOption2());
         optionC.setText(currentQuestion.getOption3());
         optionD.setText(currentQuestion.getOption4());
-    }
-
-    public void Correct(CardView cardView) {
-        cardView.setCardBackgroundColor(getResources().getColor(R.color.green));
-    }
-
-    public void Wrong(CardView cardView) {
-        cardView.setCardBackgroundColor(getResources().getColor(R.color.red));
     }
 
     private void navigateToNextQuestion() {
@@ -128,6 +120,52 @@ public class DashboardActivity extends AppCompatActivity {
             GameWon();
         }
     }
+
+    private void shuffleOptions(Question question) {
+        List<String> options = new ArrayList<>();
+        options.add(question.getOption1());
+        options.add(question.getOption2());
+        options.add(question.getOption3());
+        options.add(question.getOption4());
+
+        Collections.shuffle(options);
+
+        question.setOption1(options.get(0));
+        question.setOption2(options.get(1));
+        question.setOption3(options.get(2));
+        question.setOption4(options.get(3));
+    }
+
+    private void ensureEnoughQuestions() {
+        int originalSize = allQuestionsList.size();
+
+        // Si hay menos preguntas que el límite, duplicarlas hasta llegar al límite
+        while (allQuestionsList.size() < questionLimit) {
+            for (int i = 0; i < originalSize && allQuestionsList.size() < questionLimit; i++) {
+                allQuestionsList.add(allQuestionsList.get(i)); // Añadir duplicados
+            }
+        }
+    }
+
+
+    public void Correct(CardView cardView) {
+        cardView.setCardBackgroundColor(getResources().getColor(R.color.green));
+    }
+
+    public void Wrong(CardView cardView) {
+        cardView.setCardBackgroundColor(getResources().getColor(R.color.red));
+    }
+
+//    private void navigateToNextQuestion() {
+//        if (++index < questionLimit && index < allQuestionsList.size()) {
+//            currentQuestion = allQuestionsList.get(index);
+//            resetColor();
+//            setAllData();
+//            isOptionSelected = false;
+//        } else {
+//            GameWon();
+//        }
+//    }
 
     private void GameWon() {
         Intent intent = new Intent(this, WonActivity.class);

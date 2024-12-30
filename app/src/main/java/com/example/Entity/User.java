@@ -5,25 +5,48 @@ import java.util.List;
 
 public class User {
 
-        private int Id;
-        private String nombre;
-        private String contraseña;
-        private String correoElectronico;
+    private int Id;
+    private String username;
+    private String password;
 
-        private Date    fechaNacimiento;
+    private String correoElectronico;
+
+    private Date    fechaNacimiento;
 
 
-        private List<String> respuestasCorrectas;
-        private List<String> respuestasIncorrectas;
+    private List<String> respuestasCorrectas;
+    private List<String> respuestasIncorrectas;
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    // Getters y setters
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
         // Agrega más propiedades según tus necesidades
 
-        public User(String nombre, String contraseña, String correoElectronico, Date fechaNacimiento) {
-            this.nombre = nombre;
-            this.contraseña = contraseña;
-            this.correoElectronico = correoElectronico;
-            this.fechaNacimiento = fechaNacimiento;
-        }
+    public  User(){
+
+    }
+
+
+
 
         // Agrega getters y setters para las propiedades
 
@@ -31,21 +54,6 @@ public class User {
 
     public void setId() { this.Id = Id; }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getContraseña() {
-        return contraseña;
-    }
-
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
-    }
 
     public String getCorreoElectronico() {
         return correoElectronico;

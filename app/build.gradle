@@ -12,7 +12,7 @@ android {
     aaptOptions.cruncherEnabled = false
     defaultConfig {
         applicationId 'com.play.quizzapp'
-        minSdk 21
+        minSdk 26
         targetSdk 33
         versionCode 3
         versionName "1.2"
@@ -36,7 +36,7 @@ android {
 
 dependencies {
     implementation files('libs/ojdbc8.jar')
-    implementation 'com.google.android.gms:play-services-ads:22.0.0'
+    //implementation 'com.google.android.gms:play-services-ads:22.0.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
@@ -49,6 +49,7 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.1.0'
     implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+    //implementation 'com.google.android.gms:play-services-ads:22.0.0'
 
 
 }

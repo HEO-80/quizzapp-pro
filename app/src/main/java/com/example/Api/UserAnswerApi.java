@@ -15,10 +15,11 @@ import retrofit2.http.Path;
 
 public interface UserAnswerApi {
 
-    @GET("users")
-    Call<List<Question>> getAllQuestions();
+    @GET("user-answers")
+    Call<List<UserAnswer>> getAllUserAnswers();
 
-    @GET("users/{id}")
+
+    @GET("user-answers/{id}")
     Call<Question> getQuestionById(@Path("id") Long id);
 
 

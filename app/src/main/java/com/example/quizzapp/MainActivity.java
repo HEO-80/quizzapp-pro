@@ -11,10 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.Api.ApiClient;
 import com.example.Api.QuestionApi;
 import com.example.Entity.Question;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +22,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-//    private AdView mAdView;
+    private LocalDateTime quizStartTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,18 +30,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Inicializa MobileAds.
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
+//        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+//            }
+//        });
 
-        // Referencia al AdView.
-//        mAdView = findViewById(R.id.adView);
-//        // Crea un AdRequest.
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        // Carga el anuncio en el AdView.
-//        mAdView.loadAd(adRequest);
+
 
         // Cambiado para cargar preguntas desde la API y enviarlas a DashboardActivity
         new Handler().postDelayed(() -> fetchQuestionsForQuickTest(), 1500); // Tiempo de espera.

@@ -13,8 +13,11 @@ import androidx.cardview.widget.CardView;
 
 import com.example.Entity.Question;
 import com.example.Entity.QuizQuestion;
+import com.example.Entity.UserAnswer;
 import com.example.Utils.SessionManager;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,11 +34,14 @@ public class DashboardActivity extends AppCompatActivity {
     private TextView card_question, optionA, optionB, optionC, optionD, questionNumber;
     private CardView cardOA, cardOB, cardOC, cardOD;
 
+    private LocalDateTime quizStartTime;  // <--- Para guardar la hora de inicio
+
     private final int questionLimit = 20;
     private boolean isOptionSelected = false;
 
     // Dentro de DashboardActivity
-    private List<QuizQuestion> userAnswers = new ArrayList<>(); // Lista para almacenar las respuestas
+    private List<QuizQuestion> quizQuestions = new ArrayList<>(); // Lista para almacenar las respuestas
+    private List<UserAnswer> userAnswers = new ArrayList<>();
     private String selectedCategory = "General"; // Define una categoría predeterminada o configúrala dinámicamente
 
     TextView userNameDisplay;
@@ -75,6 +81,11 @@ public class DashboardActivity extends AppCompatActivity {
                 Collections.shuffle(allQuestionsList); // Mezclar preguntas
                 currentQuestion = allQuestionsList.get(index);
                 setAllData(); // Configurar la primera pregunta
+
+                // AQUÍ: Registramos la hora de inicio del test
+                quizStartTime = LocalDateTime.now();
+                Log.d("DashboardActivity", "Hora de inicio del test: " + quizStartTime.toString());
+
             } else {
                 Toast.makeText(this, "No hay preguntas disponibles para esta categoría.", Toast.LENGTH_SHORT).show();
                 finish(); // Salir si no hay preguntas
@@ -141,11 +152,34 @@ public class DashboardActivity extends AppCompatActivity {
 
     // Al finalizar el test, pasa las respuestas a WonActivity
     private void finishQuiz() {
+        // 1. Tomar la hora de fin
+        LocalDateTime quizEndTime = LocalDateTime.now();
+
+        // 2. Formatear las fechas (si deseas enviarlas como String)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        String startTimeFormatted = quizStartTime.format(formatter);
+        String endTimeFormatted = quizEndTime.format(formatter);
+
+        // 3. Pasar esos Strings a WonActivity
         Intent intent = new Intent(DashboardActivity.this, WonActivity.class);
-        intent.putExtra("userAnswers", new ArrayList<>(userAnswers)); // Envía la lista como Serializable
+        intent.putExtra("startTime", startTimeFormatted);
+        intent.putExtra("endTime", endTimeFormatted);
+
+        // Además, envía la lista de respuestas, correctas e incorrectas, categoría...
+
         intent.putExtra("correct", correctCount);
         intent.putExtra("wrong", wrongCount);
         intent.putExtra("category", selectedCategory);
+
+        // 6. Poner extras de listas:
+        //    - userAnswers: la lista donde guardas las respuestas (tipo QuizQuestion).
+        //    - quizQuestions: si TUVIESAS otra lista distinta con las preguntas del quiz.
+        intent.putExtra("quizQuestions", new ArrayList<>(quizQuestions));
+
+        // EJEMPLO: si tuvieras otra lista "quizQuestionsList"
+        // intent.putExtra("quizQuestions", new ArrayList<>(quizQuestionsList));
+        intent.putExtra("userAnswers", new ArrayList<>(userAnswers));
+
         startActivity(intent);
         finish();
     }
@@ -194,53 +228,57 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void OptionAclick(View view) {
         if (!isOptionSelected) {
+            processAnswer(currentQuestion.getOption1(), cardOA);
             isOptionSelected = true;
-            if (currentQuestion.getOption1().equals(currentQuestion.getCorrectAnswer())) {
-                Correct(cardOA);
-                correctCount++;
-            } else {
-                Wrong(cardOA);
-                wrongCount++;
-            }
+//            if (currentQuestion.getOption1().equals(currentQuestion.getCorrectAnswer())) {
+//                Correct(cardOA);
+//                correctCount++;
+//            } else {
+//                Wrong(cardOA);
+//                wrongCount++;
+//            }
         }
     }
 
     public void OptionBclick(View view) {
         if (!isOptionSelected) {
-            isOptionSelected = true;
-            if (currentQuestion.getOption2().equals(currentQuestion.getCorrectAnswer())) {
-                Correct(cardOB);
-                correctCount++;
-            } else {
-                Wrong(cardOB);
-                wrongCount++;
-            }
+            processAnswer(currentQuestion.getOption2(), cardOB);
+//            isOptionSelected = true;
+//            if (currentQuestion.getOption2().equals(currentQuestion.getCorrectAnswer())) {
+//                Correct(cardOB);
+//                correctCount++;
+//            } else {
+//                Wrong(cardOB);
+//                wrongCount++;
+//            }
         }
     }
 
     public void OptionCclick(View view) {
         if (!isOptionSelected) {
-            isOptionSelected = true;
-            if (currentQuestion.getOption3().equals(currentQuestion.getCorrectAnswer())) {
-                Correct(cardOC);
-                correctCount++;
-            } else {
-                Wrong(cardOC);
-                wrongCount++;
-            }
+            processAnswer(currentQuestion.getOption3(), cardOC);
+//            isOptionSelected = true;
+//            if (currentQuestion.getOption3().equals(currentQuestion.getCorrectAnswer())) {
+//                Correct(cardOC);
+//                correctCount++;
+//            } else {
+//                Wrong(cardOC);
+//                wrongCount++;
+//            }
         }
     }
 
     public void OptionDclick(View view) {
         if (!isOptionSelected) {
-            isOptionSelected = true;
-            if (currentQuestion.getOption4().equals(currentQuestion.getCorrectAnswer())) {
-                Correct(cardOD);
-                correctCount++;
-            } else {
-                Wrong(cardOD);
-                wrongCount++;
-            }
+            processAnswer(currentQuestion.getOption4(), cardOD);
+//            isOptionSelected = true;
+//            if (currentQuestion.getOption4().equals(currentQuestion.getCorrectAnswer())) {
+//                Correct(cardOD);
+//                correctCount++;
+//            } else {
+//                Wrong(cardOD);
+//                wrongCount++;
+//            }
         }
     }
 
@@ -271,10 +309,14 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void submitAnswer(Long questionId, String userAnswer, boolean isCorrect) {
         Long userId = sessionManager.getUserId();
-        Long quizId = 1L;
+        Long quizId = null;// Ficticio por ahora, se sobrescribirá en WonActivity
 
-        QuizQuestion quizQuestion = new QuizQuestion(quizId, questionId, userId, userAnswer, isCorrect);
-        userAnswers.add(quizQuestion);
+        // Construyes un UserAnswer en vez de un QuizQuestion
+        UserAnswer userAnswerObj = new UserAnswer(quizId, questionId, userId, userAnswer, isCorrect);
+        userAnswers.add(userAnswerObj);
+
+        QuizQuestion quizQ = new QuizQuestion(quizId, questionId, userId, userAnswer, isCorrect);
+        quizQuestions.add(quizQ);
     }
 
 }

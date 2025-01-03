@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+// Quiz realizados por el usuario, guarda el id del quiz,
+// el id del usuario: userId, la categoria
+// la hora y la puntuacion: score
+
 public class QuizUser implements Serializable {
     private Long id; // Añade este campo
     private Long userId;
     private String category;
-    // Si decides usar LocalDateTime en lugar de String:
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     String startTime = sdf.format(new Date()); // Fecha y hora actual

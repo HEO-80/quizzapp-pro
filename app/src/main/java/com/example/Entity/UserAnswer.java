@@ -2,6 +2,7 @@ package com.example.Entity;
 
 import java.io.Serializable;
 
+// Respuestas del usuario que ha realizado el test
 public class UserAnswer implements Serializable {
     private Long quizId;
     private Long questionId;
@@ -9,6 +10,13 @@ public class UserAnswer implements Serializable {
     private String userAnswer;
     private boolean isCorrect;
 
+    public UserAnswer(){
+
+    }
+    public UserAnswer(Long quizId, Long questionId){
+        this.quizId = quizId;
+        this.questionId = questionId;
+    }
     // Constructor
     public UserAnswer(Long quizId, Long questionId, Long userId, String userAnswer, boolean isCorrect) {
         this.quizId = quizId;

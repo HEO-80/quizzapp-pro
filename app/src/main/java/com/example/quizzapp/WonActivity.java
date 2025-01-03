@@ -19,8 +19,12 @@ import com.example.Entity.QuizQuestion;
 import com.example.Entity.QuizUser;
 import com.example.Entity.UserAnswer;
 import com.example.Utils.SessionManager;
+import com.google.gson.Gson;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +44,11 @@ public class WonActivity extends AppCompatActivity {
     LinearLayout btnShare, btnReset, btnInicial;
     SessionManager sessionManager;
 
+    // Recibir las horas
+    String startTimeString;
+    String endTimeString;
+    private ArrayList<UserAnswer> userAnswers; // Variable de instancia
+    private ArrayList<QuizQuestion> quizQuestions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +62,15 @@ public class WonActivity extends AppCompatActivity {
         btnShare = findViewById(R.id.bntShare);
         btnReset = findViewById(R.id.btnReset);
         btnInicial = findViewById(R.id.btnInicio);
+
+        quizQuestions = (ArrayList<QuizQuestion>) getIntent().getSerializableExtra("quizQuestions");
+
+        // Ahora la guardas en la variable de clase
+        userAnswers = (ArrayList<UserAnswer>) getIntent().getSerializableExtra("userAnswers");
+
+        // En este momento, la Activity ya está creada y getIntent() no será null
+        startTimeString = getIntent().getStringExtra("startTime");
+        endTimeString   = getIntent().getStringExtra("endTime");
 
         // Obtener respuestas correctas e incorrectas
         correct = getIntent().getIntExtra("correct", 0);
@@ -75,7 +93,7 @@ public class WonActivity extends AppCompatActivity {
 
         // Manejar resultados solo si no es un invitado
         if (!sessionManager.isGuest()) {
-            handleQuizResults();
+            handleQuizResults(startTimeString, endTimeString);
         } else {
             Toast.makeText(this, "Los datos no se guardan para usuarios invitados.", Toast.LENGTH_SHORT).show();
         }
@@ -117,7 +135,7 @@ public class WonActivity extends AppCompatActivity {
     /**
      * Maneja los resultados del cuestionario.
      */
-    private void handleQuizResults() {
+    private void handleQuizResults(String startTimeStr, String endTimeStr) {
         Long userId = sessionManager.getUserId();
 
         // Verificar si el usuario es invitado
@@ -139,16 +157,43 @@ public class WonActivity extends AppCompatActivity {
         category = category != null ? category : "General";
 
         // Guardar el cuestionario y manejar las respuestas después
-        submitQuizUser(userId, category, correct, new QuizUserCallback() {
+        submitQuizUser(userId, category, correct, startTimeString,
+                endTimeString, new QuizUserCallback() {
             @Override
             public void onSuccess(Long quizId) {
-                // Enviar las respuestas del usuario usando el quizId retornado
-                ArrayList<QuizQuestion> userAnswers = (ArrayList<QuizQuestion>) getIntent().getSerializableExtra("userAnswers");
-                if (userAnswers != null && !userAnswers.isEmpty()) {
-                    submitQuizQuestions(quizId, userId, userAnswers);
+
+                // 1. Al obtener el quizId, ya podemos invocar a submitQuizQuestions y submitUserAnswers.
+                //    Primero, recuperamos las listas con su clave correcta:
+
+                // Suponiendo que la lista de QUIZQUESTION se guardó con la clave "quizQuestions"
+                ArrayList<QuizQuestion> quizQuestionsList  = (ArrayList<QuizQuestion>)
+                        getIntent().getSerializableExtra("quizQuestions");
+
+                if (quizQuestionsList  != null && !quizQuestionsList.isEmpty()) {
+                    submitQuizQuestions(quizId, userId, quizQuestionsList);
                 } else {
-                    Toast.makeText(WonActivity.this, "No hay respuestas registradas.", Toast.LENGTH_SHORT).show();
+                    Log.d("WonActivity", "No hay quizQuestions para enviar.");
                 }
+
+                // Suponiendo que la lista de USERANSWER se guardó con la clave "userAnswers"
+                ArrayList<UserAnswer> userAnswersList = (ArrayList<UserAnswer>)
+                        getIntent().getSerializableExtra("userAnswers");
+
+                if (userAnswersList != null && !userAnswersList.isEmpty()) {
+                    submitUserAnswers(quizId, userId,userAnswersList);
+                } else {
+                    Log.d("WonActivity", "No hay userAnswers para enviar.");
+                }
+
+                // Enviar las respuestas del usuario usando el quizId retornado
+//                ArrayList<QuizQuestion> userAnswers = (ArrayList<QuizQuestion>) getIntent().getSerializableExtra("userAnswers");
+//                if (userAnswers != null && !userAnswers.isEmpty()) {
+//                    submitQuizQuestions(quizId, userId, userAnswers);
+//                } else {
+//                    Toast.makeText(WonActivity.this, "No hay respuestas registradas.", Toast.LENGTH_SHORT).show();
+//                }
+//                submitUserAnswers(quizId, userId);
+
             }
 
             @Override
@@ -159,23 +204,47 @@ public class WonActivity extends AppCompatActivity {
         });
     }
 
-    private void submitQuizUser(Long userId, String category, int score, QuizUserCallback callback) {
+    private void submitQuizUser(Long userId, String category, int score,
+                                String startTimeFormatted, String endTimeFormatted,
+                                QuizUserCallback callback) {
+
+        // Crear las fechas de inicio y fin
+//        LocalDateTime startTime = LocalDateTime.now();
+//        LocalDateTime endTime = LocalDateTime.now(); // Simula un final 30 minutos después
+        ZoneId zone = ZoneId.systemDefault();
+        ZonedDateTime now = ZonedDateTime.now(zone);
+        // Formatear las fechas
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+//        String startTimeFormatted = now.format(formatter);
+//        String endTimeFormatted = now.format(formatter);
+//        String startTimeFormatted = startTime.format(formatter);
+//        String endTimeFormatted = endTime.format(formatter);
+
         // Crear el objeto QuizUser
         QuizUser quizUser = new QuizUser();
         quizUser.setUserId(userId);
         quizUser.setCategory(category);
         quizUser.setScore(score);
-        quizUser.setStartTime("2024-12-05T11:00:00"); // Simula un inicio
-        quizUser.setEndTime("2024-12-05T11:30:00");   // Simula un final
+        quizUser.setStartTime(startTimeFormatted);
+        quizUser.setEndTime(endTimeFormatted);
 
         // Llamar al API
         QuizUserApi quizUserApi = ApiClient.getRetrofitInstance().create(QuizUserApi.class);
         quizUserApi.createQuizUser(quizUser).enqueue(new Callback<QuizUser>() {
             @Override
             public void onResponse(Call<QuizUser> call, Response<QuizUser> response) {
+
                 if (response.isSuccessful() && response.body() != null) {
+
                     Long quizId = response.body().getId();
                     Log.d("submitQuizUser", "QuizUser guardado correctamente con ID: " + quizId);
+
+                    // AÑADE ESTE LOG:
+//                    Log.d("submitQuizUser", "LLAMANDO a submitQuizQuestions(...) con quizId=" + quizId);
+
+                    // Llama al método para guardar las quizQuestions
+                    // (Revisa que `userAnswers` no esté vacío.)
+//                    submitQuizQuestions(quizId, userId, userAnswers);
                     callback.onSuccess(quizId);
                 } else {
                     callback.onFailure("Error en la respuesta del servidor: " + response.message());
@@ -190,123 +259,55 @@ public class WonActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Envía los datos del usuario al backend.
-     */
-//    private void submitQuizUser(Long userId, String category, int score) {
-//        // Crear las fechas de inicio y fin
-//        LocalDateTime startTime = LocalDateTime.now(); // Fecha y hora actuales
-//        LocalDateTime endTime = startTime.plusMinutes(30); // Simular 30 minutos después
-//
-//        // Formatear las fechas
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-//        String startTimeFormatted = startTime.format(formatter);
-//        String endTimeFormatted = endTime.format(formatter);
-//
-//        // Crear el objeto QuizUser con los datos
-//        QuizUser quizUser = new QuizUser(userId, category, startTimeFormatted, endTimeFormatted, score);
-//
-//        Log.d("submitQuizUser", "Enviando datos del usuario: " + quizUser);
-//
-//        QuizUserApi quizUserApi = ApiClient.getRetrofitInstance().create(QuizUserApi.class);
-//        quizUserApi.createQuizUser(quizUser).enqueue(new Callback<QuizUser>() {
-//            @Override
-//            public void onResponse(Call<QuizUser> call, Response<QuizUser> response) {
-//                if (response.isSuccessful()) {
-//                    Log.d("submitQuizUser", "Datos guardados correctamente.");
-//                } else {
-//                    Log.e("submitQuizUser", "Error al guardar datos: " + response.message());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<QuizUser> call, Throwable t) {
-//                Log.e("submitQuizUser", "Error de red: " + t.getMessage());
-//            }
-//        });
-//    }
 
-    /**
-     * Envía cada respuesta al backend.
-     */
-//    private void submitQuizQuestion(Long quizId, Long questionId, Long userId, String userAnswer, boolean isCorrect) {
-//        QuizQuestion quizQuestion = new QuizQuestion(quizId, questionId, userId, userAnswer, isCorrect);
-//        Log.d("submitQuizQuestion", "Enviando respuesta: " + quizQuestion);
-//
-//        // Llamar al API para guardar los datos
-//        QuizQuestionApi quizQuestionApi = ApiClient.getRetrofitInstance().create(QuizQuestionApi.class);
-//        quizQuestionApi.createQuizQuestion(quizQuestion).enqueue(new Callback<QuizQuestion>() {
-//            @Override
-//            public void onResponse(Call<QuizQuestion> call, Response<QuizQuestion> response) {
-//                if (response.isSuccessful()) {
-//                    Log.d("submitQuizQuestion", "Respuesta registrada correctamente.");
-//                } else {
-//                    Log.e("submitQuizQuestion", "Error al registrar respuesta: " + response.message());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<QuizQuestion> call, Throwable t) {
-//                Log.e("submitQuizQuestion", "Error de red: " + t.getMessage());
-//            }
-//        });
-//    }
+    private void submitQuizQuestions(Long quizId, Long userId, List<QuizQuestion> quizQuestions) {
+        QuizQuestionApi quizQuestionApi = ApiClient.getRetrofitInstance().create(QuizQuestionApi.class);
+        Gson gson = new Gson(); // o usa la instancia que tengas
 
-    private void submitQuizQuestions(Long quizId, Long userId, List<QuizQuestion> userAnswers) {
-        for (QuizQuestion answer : userAnswers) {
-            answer.setQuizId(quizId);
-            answer.setUserId(userId);
+        for (QuizQuestion question : quizQuestions) {
+            question.setQuizId(quizId);
+            question.setUserId(userId);
 
-            QuizQuestionApi quizQuestionApi = ApiClient.getRetrofitInstance().create(QuizQuestionApi.class);
-            quizQuestionApi.createQuizQuestion(answer).enqueue(new Callback<QuizQuestion>() {
+            // Muestra un log en JSON para ver EXACTAMENTE qué mandas:
+            String json = gson.toJson(question);
+            Log.d("submitQuizQuestions", "Enviando datos JSON: " + json);
+            // Log detallado
+            String jsonBody = gson.toJson(question);
+            Log.d("submitQuizQuestions", "Enviando datos a /api/quiz-questions: " + jsonBody);
+
+//            Log.d("submitQuizQuestions", "Enviando datos: " + answer);
+//            QuizQuestionApi quizQuestionApi = ApiClient.getRetrofitInstance().create(QuizQuestionApi.class);
+            quizQuestionApi.createQuizQuestion(question).enqueue(new Callback<QuizQuestion>() {
                 @Override
                 public void onResponse(Call<QuizQuestion> call, Response<QuizQuestion> response) {
-                    if (response.isSuccessful()) {
-                        Log.d("submitQuizQuestions", "Respuesta guardada correctamente.");
+                    if (response.isSuccessful() && response.body() != null) {
+                        Log.d("submitQuizQuestions", "Respuesta guardada correctamente: " + question.getQuestionId());
+                        Toast.makeText(WonActivity.this, "Respuesta guardada correctamente: " + question.getQuestionId(), Toast.LENGTH_SHORT).show();
                     } else {
                         Log.e("submitQuizQuestions", "Error al guardar respuesta: " + response.message());
+                        Toast.makeText(WonActivity.this, "Error al guardar respuesta: " + response.message(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<QuizQuestion> call, Throwable t) {
                     Log.e("submitQuizQuestions", "Error de red: " + t.getMessage());
+                    Toast.makeText(WonActivity.this, "Error de red al guardar respuesta.", Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
 
-    /**
-     * Envía respuestas al backend, ya sea una sola respuesta o una lista de respuestas.
-     */
-//    private void submitQuizQuestion(Long quizId, Long userId, List<QuizQuestion> quizQuestions) {
-//        QuizQuestionApi quizQuestionApi = ApiClient.getRetrofitInstance().create(QuizQuestionApi.class);
-//
-//        for (QuizQuestion question : quizQuestions) {
-//            // Asociar el quizId y userId a cada pregunta antes de enviarla
-//            question.setQuizId(quizId);
-//            question.setUserId(userId);
-//
-//            quizQuestionApi.createQuizQuestion(question).enqueue(new Callback<QuizQuestion>() {
-//                @Override
-//                public void onResponse(Call<QuizQuestion> call, Response<QuizQuestion> response) {
-//                    if (response.isSuccessful()) {
-//                        Log.d("submitQuizQuestions", "Pregunta guardada correctamente: " + question.getQuestionId());
-//                    } else {
-//                        Log.e("submitQuizQuestions", "Error al guardar pregunta: " + response.message());
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<QuizQuestion> call, Throwable t) {
-//                    Log.e("submitQuizQuestions", "Error de red: " + t.getMessage());
-//                }
-//            });
-//        }
-//    }
 
-    private void submitUserAnswers(Long quizId, Long userId) {
-        ArrayList<UserAnswer> userAnswers = getUserAnswers(); // Método que obtiene la lista de respuestas
+
+    private void submitUserAnswers(Long quizId, Long userId, List<UserAnswer> answers) {
+//        ArrayList<UserAnswer> answers = getUserAnswers(); // Método que obtiene la lista de respuestas
+//        submitUserAnswers(quizId, userId, answers);
+        Gson gson = new Gson(); // o usa la instancia que tengas
+        if (answers == null || answers.isEmpty()) {
+            Toast.makeText(this, "No hay respuestas para enviar.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         UserAnswerApi userAnswerApi = ApiClient.getRetrofitInstance().create(UserAnswerApi.class);
 
@@ -314,19 +315,30 @@ public class WonActivity extends AppCompatActivity {
             answer.setQuizId(quizId); // Asociar el quizId a cada respuesta
             answer.setUserId(userId);
 
+            // Muestra un log en JSON para ver EXACTAMENTE qué mandas:
+            String json = gson.toJson(answer);
+            Log.d("submitUserAnswers", "Enviando datos JSON: " + json);
+            // Log detallado
+            String jsonBody = gson.toJson(answer);
+            Log.d("submitUserAnswers", "Enviando datos a /api/user-answersArrayList<QuizQuestion> quizQuestionsList = (ArrayList<QuizQuestion>)\n" +
+                    "            getIntent().getSerializableExtra(\"quizQuestions\");: " + jsonBody);
+
             userAnswerApi.createUserAnswer(answer).enqueue(new Callback<UserAnswer>() {
                 @Override
                 public void onResponse(Call<UserAnswer> call, Response<UserAnswer> response) {
-                    if (response.isSuccessful()) {
+                    if (response.isSuccessful() && response.body() != null) {
                         Log.d("submitUserAnswers", "Respuesta guardada correctamente: " + answer.getQuestionId());
+                        Toast.makeText(WonActivity.this, "Respuesta correcta guardada: " + answer.getQuestionId(), Toast.LENGTH_SHORT).show();
                     } else {
                         Log.e("submitUserAnswers", "Error al guardar respuesta: " + response.message());
+                        Toast.makeText(WonActivity.this, "Error al guardar respuesta: " + response.message(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<UserAnswer> call, Throwable t) {
                     Log.e("submitUserAnswers", "Error de red: " + t.getMessage());
+                    Toast.makeText(WonActivity.this, "Error de red al guardar respuesta.", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -334,10 +346,17 @@ public class WonActivity extends AppCompatActivity {
 
     private ArrayList<QuizQuestion> getQuizQuestions() {
         return (ArrayList<QuizQuestion>) getIntent().getSerializableExtra("quizQuestions");
+        //return ArrayList<QuizQuestion> quizQuestions = (ArrayList<QuizQuestion>)
+        //        getIntent().getSerializableExtra("quizQuestions");
     }
 
     private ArrayList<UserAnswer> getUserAnswers() {
         return (ArrayList<UserAnswer>) getIntent().getSerializableExtra("userAnswers");
     }
 
+//    ArrayList<QuizQuestion> quizQuestions = (ArrayList<QuizQuestion>)
+//            getIntent().getSerializableExtra("quizQuestions");
+//    // Lista de userAnswers
+//    ArrayList<UserAnswer> userAnswers = (ArrayList<UserAnswer>)
+//            getIntent().getSerializableExtra("userAnswers");
 }

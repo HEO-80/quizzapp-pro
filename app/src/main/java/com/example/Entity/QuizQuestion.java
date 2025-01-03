@@ -2,6 +2,9 @@ package com.example.Entity;
 
 import java.io.Serializable;
 
+// Entidad que guarda el id del quiz realizado,
+// las question realizadas en el test
+
 public class QuizQuestion implements Serializable {
         private Long quizId;
         private Long questionId;

@@ -13,7 +13,7 @@ import com.example.Utils.SessionManager;
 
 public class StartActivity extends AppCompatActivity {
 
-    private Button btnStart, btnCategory, btnLogin, btnLogout;
+    private Button btnStart, btnCategory, btnLogin, btnLogout,btnStatistics;
     private TextView userNameDisplay;
     private SessionManager sessionManager;
 
@@ -28,6 +28,13 @@ public class StartActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnLogout = findViewById(R.id.btnLogout);
         userNameDisplay = findViewById(R.id.user_name_display); // Inicializar correctamente el TextView
+
+        btnStatistics = findViewById(R.id.btnStatistics);
+
+        btnStatistics.setOnClickListener(v -> {
+            Intent intent = new Intent(StartActivity.this, StatisticsActivity.class);
+            startActivity(intent);
+        });
 
         sessionManager = new SessionManager(this);
 

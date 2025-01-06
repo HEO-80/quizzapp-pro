@@ -41,6 +41,11 @@ public class LoginActivity extends AppCompatActivity {
             String username = etUsername.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
+
+            // Suponiendo que la autenticación es exitosa y obtienes un userId
+            Long userId = 101L; // Ejemplo estático, reemplaza con el ID real del usuario
+
+
             if (!username.isEmpty() && !password.isEmpty()) {
                 loginUser(username, password); // Llamar a la función de login
             } else {
@@ -72,8 +77,8 @@ public class LoginActivity extends AppCompatActivity {
                         long userId = jsonResponse.getLong("userId"); // Asegúrate de que esto está disponible en el servidor
 
                         // Guardar el nombre de usuario en el SessionManager
-                        sessionManager.saveUser(username, ""); // La contraseña puede estar vacía si no se necesita
-                        sessionManager.saveUserId(userId); // Guarda el userId aquí
+                        sessionManager.saveUser(username, "", userId); // La contraseña puede estar vacía si no se necesita
+//                        sessionManager.saveUserId(userId); // Guarda el userId aquí
 
                         // Procesar la respuesta en caso de éxito
                     Toast.makeText(LoginActivity.this, "Login exitoso", Toast.LENGTH_SHORT).show();
@@ -98,14 +103,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                try {
-
-                    Toast.makeText(LoginActivity.this, "Error: ",Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                // Manejar errores de red o en la llamada
                 Toast.makeText(LoginActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-                }
+            }
         });
     }
 }

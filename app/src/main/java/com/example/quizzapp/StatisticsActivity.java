@@ -24,7 +24,7 @@ import retrofit2.Response;
 
 public class StatisticsActivity extends AppCompatActivity {
 
-    private TextView userNameDisplay, tvStatisticsTitle, tvUserTests, tvCategorySummary;
+    private TextView userNameDisplay, tvStatisticsTitle, tvUserTests, tvCategorySummary,tvTotalTests,tvPassedTests, tvFailedTests;
     private RecyclerView recyclerViewQuizzes, recyclerViewCategoryStats;
     private QuizzesAdapter quizzesAdapter;
     private CategoryStatsAdapter categoryStatsAdapter;
@@ -38,6 +38,9 @@ public class StatisticsActivity extends AppCompatActivity {
         // Inicializar vistas
         userNameDisplay = findViewById(R.id.user_name_display);
         tvStatisticsTitle = findViewById(R.id.tvStatisticsTitle);
+        tvTotalTests = findViewById(R.id.tvTotalTests);
+        tvPassedTests = findViewById(R.id.tvPassedTests);
+        tvFailedTests = findViewById(R.id.tvFailedTests);
         tvUserTests = findViewById(R.id.tvUserTests);
         tvCategorySummary = findViewById(R.id.tvCategorySummary);
         recyclerViewQuizzes = findViewById(R.id.recyclerViewQuizzes);
@@ -89,7 +92,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
     private void fetchUserQuizzes(){
         Long userId = sessionManager.getUserId();
-        if(userId == null){
+        if(userId == -1){
             Toast.makeText(this, "Usuario no autenticado.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -102,6 +105,7 @@ public class StatisticsActivity extends AppCompatActivity {
                 if(response.isSuccessful() && response.body() != null){
                     List<QuizUser> quizzes = response.body();
                     quizzesAdapter.setQuizzes(quizzes);
+                    calculateAndDisplayStatistics(quizzes);
                 } else {
                     Toast.makeText(StatisticsActivity.this, "Error al obtener los quizzes", Toast.LENGTH_SHORT).show();
                     Log.e("StatisticsActivity", "Error: " + response.message());
@@ -114,6 +118,28 @@ public class StatisticsActivity extends AppCompatActivity {
                 Log.e("StatisticsActivity", "Fallo: " + t.getMessage());
             }
         });
+    }
+
+    /**
+     * Calcula y muestra las estadísticas generales del usuario.
+     */
+    private void calculateAndDisplayStatistics(List<QuizUser> quizzes) {
+        int totalTests = quizzes.size();
+        int passedTests = 0;
+        int failedTests = 0;
+
+        for(QuizUser quiz : quizzes){
+            if(quiz.getScore() >= 10){
+                passedTests++;
+            } else {
+                failedTests++;
+            }
+        }
+
+        // Asignar los valores a los TextViews
+        tvTotalTests.setText("Tests Realizados: " + totalTests);
+        tvPassedTests.setText("Tests Aprobados: " + passedTests);
+        tvFailedTests.setText("Tests Suspendidos: " + failedTests);
     }
 
     private void fetchCategoryStatistics(){

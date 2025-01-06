@@ -8,24 +8,16 @@
     android:background="@drawable/share_shape"
     android:layout_marginBottom="8dp">
 
-    <!-- Nuevo TextView para nombre usuario -->
-<!--    <TextView-->
-<!--        android:id="@+id/user"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Fecha: 15/10/2023"-->
-<!--        android:textSize="14sp"-->
-<!--        android:textColor="@android:color/black" />-->
 
     <!-- Nuevo TextView para el Nombre del Usuario -->
-    <TextView
-        android:id="@+id/tvUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Usuario: "
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="4dp"/>
+<!--    <TextView-->
+<!--        android:id="@+id/tvUsername"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Usuario: "-->
+<!--        android:textSize="14sp"-->
+<!--        android:textColor="@android:color/black"-->
+<!--        android:layout_marginTop="4dp"/>-->
 
     <TextView
         android:id="@+id/tvQuizCategory"
@@ -33,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="Categoría: "
         android:textSize="16sp"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/white"/>
 
     <TextView
         android:id="@+id/tvQuizResult"
@@ -41,7 +33,7 @@
         android:layout_height="wrap_content"
         android:text="Resultado: Aprobado/Suspendido"
         android:textSize="16sp"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/white"/>
 
     <TextView
         android:id="@+id/tvQuizScore"
@@ -49,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="Respuestas Correctas: 15"
         android:textSize="14sp"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/white"/>
 
     <!-- Nuevo TextView para la Fecha -->
     <TextView
@@ -58,6 +50,6 @@
         android:layout_height="wrap_content"
         android:text="Fecha: 15/10/2023"
         android:textSize="14sp"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

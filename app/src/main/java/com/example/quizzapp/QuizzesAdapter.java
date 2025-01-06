@@ -65,9 +65,8 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
         holder.tvQuizCategory.setText("Categoría: " + quiz.getCategory());
         // Asignar el Nombre del Usuario desde SessionManager
         String username = sessionManager.getUsername();
-        holder.tvUsername.setText("Usuario: " + username);
-        // Asignar el Nombre del Usuario
-//        holder.tvUsername.setText("Usuario: " + quiz.getUsername());
+//        holder.tvUsername.setText("Usuario: " + username);
+
 
         // Determinar si el quiz fue aprobado o suspendido
         String result = quiz.getScore() >= 10 ? "Aprobado" : "Suspendido";
@@ -112,14 +111,14 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
     }
 
     class QuizViewHolder extends RecyclerView.ViewHolder {
-        TextView tvQuizCategory, tvQuizResult, tvQuizScore, tvTestDate,tvUsername;
+        TextView tvQuizCategory, tvQuizResult, tvQuizScore, tvTestDate;
 
         public QuizViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvUsername = itemView.findViewById(R.id.tvUsername);
+//            tvUsername = itemView.findViewById(R.id.tvUsername);
             tvQuizCategory = itemView.findViewById(R.id.tvQuizCategory);
             tvQuizResult = itemView.findViewById(R.id.tvQuizResult);
-            tvTestDate = itemView.findViewById(R.id.tvTestDate); // Vincular el nuevo TextView
+            tvTestDate = itemView.findViewById(R.id.tvTestDate);
             tvQuizScore = itemView.findViewById(R.id.tvQuizScore);
         }
     }

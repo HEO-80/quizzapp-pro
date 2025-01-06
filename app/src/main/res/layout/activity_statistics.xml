@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
 <!--            &lt;!&ndash; Barra de herramientas con botón de salida &ndash;&gt;-->
 <!--            <RelativeLayout-->
 <!--                android:id="@+id/toolbar"-->
@@ -84,7 +85,7 @@
                 android:id="@+id/user_name_display"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Usuario actual: guest"
+                android:text="Usuario: guest"
                 android:textSize="18sp"
                 android:textColor="@android:color/white"
                 android:gravity="center"
@@ -96,21 +97,57 @@
                 android:id="@+id/tvStatisticsTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Estadísticas del Usuario"
+                android:text="Estadísticas"
                 android:textSize="24sp"
                 android:textColor="@android:color/white"
                 android:gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"/>
 
+
+            <!-- Número de Tests Realizados -->
+            <TextView
+                android:id="@+id/tvTotalTests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tests Realizados: 0"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"/>
+
+            <!-- Número de Tests Aprobados -->
+            <TextView
+                android:id="@+id/tvPassedTests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" Aprobados: 0"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"/>
+
+            <!-- Número de Tests Suspendidos -->
+            <TextView
+                android:id="@+id/tvFailedTests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" Suspendidos: 0"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"/>
+
+
             <!-- Lista de Tests Realizados -->
             <TextView
                 android:id="@+id/tvUserTests"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tests Realizados"
+                android:text="Lista de Tests "
                 android:textSize="18sp"
                 android:textColor="@android:color/white"
+                android:gravity="center"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"/>
 

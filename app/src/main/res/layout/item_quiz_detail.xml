@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:text="ID Pregunta: 3002"
                 android:textSize="16sp"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:id="@+id/tvUserAnswer"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="Tu Respuesta: Fase de tormenta"
                 android:textSize="14sp"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:id="@+id/tvCorrectAnswer"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:text="Respuesta Correcta: Fase de tormenta"
                 android:textSize="14sp"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/white"/>
         </LinearLayout>
 
     </LinearLayout>

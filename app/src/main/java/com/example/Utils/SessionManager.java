@@ -26,16 +26,17 @@ public class SessionManager {
 //        editor.putLong(KEY_USER_ID, userId); // Nuevo: almacenar el ID del usuario
 //        editor.apply();
 //    }
-    public void saveUser(String username, String password) {
+    public void saveUser(String username, String password, Long userId) {
         editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_PASSWORD, password); // Si no necesitas guardar la contraseña, puedes omitir esto
+        editor.putLong(KEY_USER_ID, userId); // Almacenar el ID del usuario
         editor.apply();
     }
 
-    public void saveUserId(Long userId) {
-        editor.putLong(KEY_USER_ID, userId);
-        editor.apply();
-    }
+//    public void saveUserId(Long userId) {
+//        editor.putLong(KEY_USER_ID, userId);
+//        editor.apply();
+//    }
     /**
      * Verifica si el usuario es "guest".
      */

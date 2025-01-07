@@ -23,7 +23,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
-    private Button btnLoginSubmit;
+    private Button btnLoginSubmit, btnRegisterSubmit;
     private SessionManager sessionManager;
 
     @Override
@@ -36,16 +36,28 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLoginSubmit = findViewById(R.id.btnLoginSubmit);
+        btnRegisterSubmit = findViewById(R.id.btnRegisterSubmit);
 
         btnLoginSubmit.setOnClickListener(v -> {
             String username = etUsername.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
+
+
+            // Suponiendo que la autenticación es exitosa y obtienes un userId
+            Long userId = 101L; // Ejemplo estático, reemplaza con el ID real del usuario
+
 
             if (!username.isEmpty() && !password.isEmpty()) {
                 loginUser(username, password); // Llamar a la función de login
             } else {
                 Toast.makeText(this, "Credenciales inválidas", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        // Configurar el botón de registro para navegar a RegisterActivity
+        btnRegisterSubmit.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -72,8 +84,8 @@ public class LoginActivity extends AppCompatActivity {
                         long userId = jsonResponse.getLong("userId"); // Asegúrate de que esto está disponible en el servidor
 
                         // Guardar el nombre de usuario en el SessionManager
-                        sessionManager.saveUser(username, ""); // La contraseña puede estar vacía si no se necesita
-                        sessionManager.saveUserId(userId); // Guarda el userId aquí
+                        sessionManager.saveUser(username, "", userId); // La contraseña puede estar vacía si no se necesita
+//                        sessionManager.saveUserId(userId); // Guarda el userId aquí
 
                         // Procesar la respuesta en caso de éxito
                     Toast.makeText(LoginActivity.this, "Login exitoso", Toast.LENGTH_SHORT).show();
@@ -92,20 +104,21 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
 
                     // Manejar el caso de error en la respuesta
-                    Toast.makeText(LoginActivity.this, "Login fallido: " + response.message(), Toast.LENGTH_SHORT).show();
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessage = jsonObject.getString("message");
+                        Toast.makeText(LoginActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    } catch (Exception e){
+                        Toast.makeText(LoginActivity.this, "Error durante el login", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                try {
-
-                    Toast.makeText(LoginActivity.this, "Error: ",Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                // Manejar errores de red o en la llamada
                 Toast.makeText(LoginActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-                }
+            }
         });
     }
 }

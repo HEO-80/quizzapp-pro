@@ -62,7 +62,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Validación de preguntas recibidas
         Intent intent = getIntent();
-        selectedCategory = intent.getStringExtra("selectedCategory");
+        selectedCategory = intent.getStringExtra("category");
         if (selectedCategory == null) {
             selectedCategory = "General"; // Valor predeterminado
         }

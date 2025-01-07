@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/activity_register.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".RegisterActivity">
+
+    <!-- ScrollView para asegurar compatibilidad con pantallas pequeñas -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp">
+
+            <!-- Separación -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+
+            <ImageView
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:padding="10dp"
+                android:background="@drawable/logo2"
+                android:layout_centerInParent="true"/>
+            <!-- Separación -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <!-- Etiqueta para Nombre de Usuario -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre de Usuario"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Campo de entrada para Usuario -->
+            <EditText
+                android:id="@+id/etUsernameRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/edittext_background"
+                android:hint="Ingresa tu usuario"
+                android:inputType="text"
+                android:textColor="@color/white"
+                android:textColorHint="#B547E6" />
+
+            <!-- Separación -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <!-- Etiqueta para Contraseña -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contraseña"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Campo de entrada para Contraseña -->
+            <EditText
+                android:id="@+id/etPasswordRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/edittext_background"
+                android:hint="Ingresa tu Contraseña"
+                android:inputType="textPassword"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#B547E6" />
+
+            <!-- Separación -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <!-- Etiqueta para Correo Electrónico -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Correo Electrónico"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Campo de entrada para Correo Electrónico -->
+            <EditText
+                android:id="@+id/etEmailRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/edittext_background"
+                android:hint="Ingresa tu correo electrónico"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/white"
+                android:textColorHint="#B547E6" />
+
+            <!-- Separación -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <!-- Etiqueta para Confirmación de Correo Electrónico -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirma tu Correo Electrónico"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Campo de entrada para Confirmación de Correo Electrónico -->
+            <EditText
+                android:id="@+id/etConfirmEmailRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/edittext_background"
+                android:hint="Confirma tu correo electrónico"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/white"
+                android:textColorHint="#B547E6" />
+
+            <!-- Separación -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <!-- Botón de Registro -->
+            <Button
+                android:id="@+id/btnRegisterSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/share_shape"
+                android:text="Registrar"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:padding="10dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

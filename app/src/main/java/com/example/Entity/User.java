@@ -1,15 +1,17 @@
 package com.example.Entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 import java.util.List;
 
 public class User {
 
-    private int Id;
+    private int id;
     private String username;
     private String password;
-
-    private String correoElectronico;
+    @SerializedName("email")
+    private String email;
 
     private Date    fechaNacimiento;
 
@@ -45,22 +47,27 @@ public class User {
 
     }
 
-
-
-
-        // Agrega getters y setters para las propiedades
-
-    public int getId() {return Id; }
-
-    public void setId() { this.Id = Id; }
-
-
-    public String getCorreoElectronico() {
-        return correoElectronico;
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
     }
 
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
+
+// Agrega getters y setters para las propiedades
+
+    public int getId() {return id; }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getFechaNacimiento() {

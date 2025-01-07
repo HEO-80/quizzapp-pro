@@ -23,7 +23,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
-    private Button btnLoginSubmit;
+    private Button btnLoginSubmit, btnRegisterSubmit;
     private SessionManager sessionManager;
 
     @Override
@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLoginSubmit = findViewById(R.id.btnLoginSubmit);
+        btnRegisterSubmit = findViewById(R.id.btnRegisterSubmit);
 
         btnLoginSubmit.setOnClickListener(v -> {
             String username = etUsername.getText().toString().trim();
@@ -51,6 +52,12 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Credenciales inválidas", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        // Configurar el botón de registro para navegar a RegisterActivity
+        btnRegisterSubmit.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -97,7 +104,14 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
 
                     // Manejar el caso de error en la respuesta
-                    Toast.makeText(LoginActivity.this, "Login fallido: " + response.message(), Toast.LENGTH_SHORT).show();
+                    try {
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String errorMessage = jsonObject.getString("message");
+                        Toast.makeText(LoginActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    } catch (Exception e){
+                        Toast.makeText(LoginActivity.this, "Error durante el login", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 

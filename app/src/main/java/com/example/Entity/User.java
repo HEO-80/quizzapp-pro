@@ -7,7 +7,7 @@ import java.util.List;
 
 public class User {
 
-    private int id;
+    private Long  id;
     private String username;
     private String password;
     @SerializedName("email")
@@ -56,9 +56,9 @@ public class User {
 
 // Agrega getters y setters para las propiedades
 
-    public int getId() {return id; }
+    public Long  getId() {return id; }
 
-    public void setId(int id) {
+    public void setId(Long  id) {
         this.id = id;
     }
 
@@ -95,6 +95,5 @@ public class User {
         return respuestasIncorrectas;
     }
 
-    // Agrega métodos adicionales según tus necesidades
 
 }

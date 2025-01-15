@@ -10,12 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.Api.ApiClient;
 import com.example.Api.ApiService;
+import com.example.Entity.LoginResponseDTO;
 import com.example.Entity.User;
 import com.example.Utils.SessionManager;
 
 import org.json.JSONObject;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,34 +72,54 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // Llamar al endpoint de login con Retrofit
-        apiService.login(user).enqueue(new Callback<ResponseBody>() {
+        apiService.login(user).enqueue(new Callback<LoginResponseDTO>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {
                 if (response.isSuccessful()) {
                     try {
-                        // Convertir la respuesta a JSON y obtener el nombre de usuario
-                        String responseBody = response.body().string();
-                        JSONObject jsonResponse = new JSONObject(responseBody);
-                        String username = jsonResponse.getString("username");
-                        long userId = jsonResponse.getLong("userId"); // Asegúrate de que esto está disponible en el servidor
+                        LoginResponseDTO loginResponse = response.body();
+                        if (loginResponse != null) {
+                            String message = loginResponse.getMessage();
+                            String username = loginResponse.getUsername();
+                            Long userId = loginResponse.getUserId();
+                            // Guardar la información del usuario en el SessionManager
+//                            sessionManager.saveUser(loginResponse.getUsername(), loginResponse.getEmail(), userResponse.getId());
+                            sessionManager.saveUser(username, "usuario@ejemplo.com", userId); // Ajusta el email según corresponda
 
-                        // Guardar el nombre de usuario en el SessionManager
-                        sessionManager.saveUser(username, "", userId); // La contraseña puede estar vacía si no se necesita
-//                        sessionManager.saveUserId(userId); // Guarda el userId aquí
+                            Toast.makeText(LoginActivity.this, "Login exitoso", Toast.LENGTH_SHORT).show();
 
-                        // Procesar la respuesta en caso de éxito
-                    Toast.makeText(LoginActivity.this, "Login exitoso", Toast.LENGTH_SHORT).show();
-                    // Aquí puedes guardar la sesión del usuario si es necesario
-
-                        // Regresar a la pantalla inicial
-                        Intent intent = new Intent(LoginActivity.this, StartActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        finish();
-
+                            // Navegar a la pantalla inicial
+                            Intent intent = new Intent(LoginActivity.this, StartActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Error: Respuesta vacía del servidor", Toast.LENGTH_SHORT).show();
+                        }
+//
+//                        // Convertir la respuesta a JSON y obtener el nombre de usuario
+////                        String responseBody = response.body().string();
+//                        JSONObject jsonResponse = new JSONObject(responseBody);
+//                        String username = jsonResponse.getString("username");
+//                        long userId = jsonResponse.getLong("userId"); // Asegúrate de que esto está disponible en el servidor
+//
+//                        // Guardar el nombre de usuario en el SessionManager
+//                        sessionManager.saveUser(username, "", userId); // La contraseña puede estar vacía si no se necesita
+////                        sessionManager.saveUserId(userId); // Guarda el userId aquí
+//
+//                        // Procesar la respuesta en caso de éxito
+//                    Toast.makeText(LoginActivity.this, "Login exitoso", Toast.LENGTH_SHORT).show();
+//                    // Aquí puedes guardar la sesión del usuario si es necesario
+//
+//                        // Regresar a la pantalla inicial
+//                        Intent intent = new Intent(LoginActivity.this, StartActivity.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        startActivity(intent);
+//                        finish();
                     } catch (Exception e) {
                         Toast.makeText(LoginActivity.this, "Error procesando la respuesta", Toast.LENGTH_SHORT).show();
                     }
+
 
                 } else {
 
@@ -116,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<LoginResponseDTO> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

@@ -1,10 +1,11 @@
 package com.example.Api;
 
+import com.example.Entity.LoginResponseDTO;
 import com.example.Entity.User;
+import com.example.Entity.UserResponseDTO;
 
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -17,23 +18,23 @@ public interface ApiService {
 
     // Endpoint para obtener todos los usuarios (puede ser restringido)
     @GET("/api/users")
-    Call<List<User>> getAllUsers();
+    Call<List<UserResponseDTO>> getAllUsers();
 
     // Endpoint para obtener un usuario por ID
     @GET("/api/users/{id}")
-    Call<User> getUserById(@Path("id") Long id);
+    Call<UserResponseDTO> getUserById(@Path("id") Long id);
 
     // Endpoint para crear un nuevo usuario (registro)
     @POST("/api/users")
-    Call<User> createUser(@Body User user);
+    Call<UserResponseDTO> createUser(@Body User user);
 
     // Endpoint para actualizar un usuario existente
     @PUT("/api/users/{id}")
-    Call<User> updateUser(@Path("id") Long id, @Body User user);
+    Call<UserResponseDTO> updateUser(@Path("id") Long id, @Body User user);
 
     // Endpoint para eliminar un usuario
     @DELETE("/api/users/{id}")
-    Call<ResponseBody> deleteUser(@Path("id") Long id);
+    Call<UserResponseDTO> deleteUser(@Path("id") Long id);
 
     /**
      * Realiza la solicitud POST al endpoint de login.
@@ -41,7 +42,7 @@ public interface ApiService {
      * @return Respuesta del servidor.
      */
     @POST("/api/login")
-    Call<ResponseBody> login(@Body User user);
+    Call<LoginResponseDTO> login(@Body User user);
 
 
 }

@@ -94,7 +94,8 @@ public class RegisterActivity extends AppCompatActivity {
      * Realizar la solicitud de registro al backend.
      */
     private void registerUser(String username, String password, String email) {
-        ApiService apiService = ApiClient.getRetrofitInstance().create(ApiService.class);
+        ApiService apiService = ApiClient.getRetrofitInstance(RegisterActivity.this)
+                .create(ApiService.class);
 
         // Crear un objeto User con las propiedades relevantes
         User user = new User(username, password, email);

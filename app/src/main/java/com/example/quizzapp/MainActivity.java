@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Nuevo método para cargar preguntas de la API
     private void fetchQuestionsForQuickTest() {
-        QuestionApi questionApi = ApiClient.getRetrofitInstance().create(QuestionApi.class);
+        QuestionApi questionApi = ApiClient.getRetrofitInstance(MainActivity.this)
+                .create(QuestionApi.class);
 
         questionApi.getAllQuestions().enqueue(new Callback<List<Question>>() {
             @Override

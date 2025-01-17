@@ -52,7 +52,8 @@ public class CategoryActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        QuestionApi questionApi = ApiClient.getRetrofitInstance().create(QuestionApi.class);
+        QuestionApi questionApi = ApiClient.getRetrofitInstance(CategoryActivity.this)
+                                            .create(QuestionApi.class);
 
         questionApi.getAllQuestions().enqueue(new Callback<List<Question>>() {
             @Override

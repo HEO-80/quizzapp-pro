@@ -97,7 +97,7 @@ public class StatisticsActivity extends AppCompatActivity {
             return;
         }
 
-        QuizUserApi quizUserApi = ApiClient.getRetrofitInstance().create(QuizUserApi.class);
+        QuizUserApi quizUserApi = ApiClient.getRetrofitInstance(StatisticsActivity.this).create(QuizUserApi.class);
         Call<List<QuizUser>> call = quizUserApi.getUserQuizzes(userId);
         call.enqueue(new Callback<List<QuizUser>>() {
             @Override
@@ -149,7 +149,8 @@ public class StatisticsActivity extends AppCompatActivity {
             return;
         }
 
-        CategoryStatsApi categoryStatsApi = ApiClient.getRetrofitInstance().create(CategoryStatsApi.class);
+        CategoryStatsApi categoryStatsApi = ApiClient.getRetrofitInstance(StatisticsActivity.this)
+                .create(CategoryStatsApi.class);
         Call<List<CategoryStats>> call = categoryStatsApi.getCategoryStatistics(userId);
         call.enqueue(new Callback<List<CategoryStats>>() {
             @Override

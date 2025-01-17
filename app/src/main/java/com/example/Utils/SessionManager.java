@@ -9,6 +9,7 @@ public class SessionManager {
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_USER_ID = "user_id"; // Almacenar el ID del usuario
 
+    private static final String KEY_TOKEN = "access_token";
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
@@ -33,6 +34,14 @@ public class SessionManager {
         editor.apply();
     }
 
+    public void saveToken(String token) {
+        editor.putString(KEY_TOKEN, token);
+        editor.apply();
+    }
+
+    public String getToken() {
+        return sharedPreferences.getString(KEY_TOKEN, null);
+    }
 //    public void saveUserId(Long userId) {
 //        editor.putLong(KEY_USER_ID, userId);
 //        editor.apply();

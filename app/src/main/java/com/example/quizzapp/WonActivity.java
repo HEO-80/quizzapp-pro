@@ -162,10 +162,6 @@ public class WonActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Long quizId) {
 
-                // 1. Al obtener el quizId, ya podemos invocar a submitQuizQuestions y submitUserAnswers.
-                //    Primero, recuperamos las listas con su clave correcta:
-
-                // Suponiendo que la lista de QUIZQUESTION se guardó con la clave "quizQuestions"
                 ArrayList<QuizQuestion> quizQuestionsList  = (ArrayList<QuizQuestion>)
                         getIntent().getSerializableExtra("quizQuestions");
 
@@ -175,7 +171,6 @@ public class WonActivity extends AppCompatActivity {
                     Log.d("WonActivity", "No hay quizQuestions para enviar.");
                 }
 
-                // Suponiendo que la lista de USERANSWER se guardó con la clave "userAnswers"
                 ArrayList<UserAnswer> userAnswersList = (ArrayList<UserAnswer>)
                         getIntent().getSerializableExtra("userAnswers");
 
@@ -184,15 +179,6 @@ public class WonActivity extends AppCompatActivity {
                 } else {
                     Log.d("WonActivity", "No hay userAnswers para enviar.");
                 }
-
-                // Enviar las respuestas del usuario usando el quizId retornado
-//                ArrayList<QuizQuestion> userAnswers = (ArrayList<QuizQuestion>) getIntent().getSerializableExtra("userAnswers");
-//                if (userAnswers != null && !userAnswers.isEmpty()) {
-//                    submitQuizQuestions(quizId, userId, userAnswers);
-//                } else {
-//                    Toast.makeText(WonActivity.this, "No hay respuestas registradas.", Toast.LENGTH_SHORT).show();
-//                }
-//                submitUserAnswers(quizId, userId);
 
             }
 
@@ -209,16 +195,10 @@ public class WonActivity extends AppCompatActivity {
                                 QuizUserCallback callback) {
 
         // Crear las fechas de inicio y fin
-//        LocalDateTime startTime = LocalDateTime.now();
-//        LocalDateTime endTime = LocalDateTime.now(); // Simula un final 30 minutos después
         ZoneId zone = ZoneId.systemDefault();
         ZonedDateTime now = ZonedDateTime.now(zone);
         // Formatear las fechas
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-//        String startTimeFormatted = now.format(formatter);
-//        String endTimeFormatted = now.format(formatter);
-//        String startTimeFormatted = startTime.format(formatter);
-//        String endTimeFormatted = endTime.format(formatter);
 
         // Crear el objeto QuizUser
         QuizUser quizUser = new QuizUser();
@@ -240,13 +220,7 @@ public class WonActivity extends AppCompatActivity {
                     Long quizId = response.body().getId();
                     Log.d("submitQuizUser", "QuizUser guardado correctamente con ID: " + quizId);
 
-                    // AÑADE ESTE LOG:
-//                    Log.d("submitQuizUser", "LLAMANDO a submitQuizQuestions(...) con quizId=" + quizId);
-
-                    // Llama al método para guardar las quizQuestions
-                    // (Revisa que `userAnswers` no esté vacío.)
-//                    submitQuizQuestions(quizId, userId, userAnswers);
-                    callback.onSuccess(quizId);
+                   callback.onSuccess(quizId);
                 } else {
                     callback.onFailure("Error en la respuesta del servidor: " + response.message());
                 }
@@ -270,15 +244,12 @@ public class WonActivity extends AppCompatActivity {
             question.setQuizId(quizId);
             question.setUserId(userId);
 
-            // Muestra un log en JSON para ver EXACTAMENTE qué mandas:
             String json = gson.toJson(question);
             Log.d("submitQuizQuestions", "Enviando datos JSON: " + json);
             // Log detallado
             String jsonBody = gson.toJson(question);
             Log.d("submitQuizQuestions", "Enviando datos a /api/quiz-questions: " + jsonBody);
 
-//            Log.d("submitQuizQuestions", "Enviando datos: " + answer);
-//            QuizQuestionApi quizQuestionApi = ApiClient.getRetrofitInstance().create(QuizQuestionApi.class);
             quizQuestionApi.createQuizQuestion(question).enqueue(new Callback<QuizQuestion>() {
                 @Override
                 public void onResponse(Call<QuizQuestion> call, Response<QuizQuestion> response) {
@@ -303,9 +274,7 @@ public class WonActivity extends AppCompatActivity {
 
 
     private void submitUserAnswers(Long quizId, Long userId, List<UserAnswer> answers) {
-//        ArrayList<UserAnswer> answers = getUserAnswers(); // Método que obtiene la lista de respuestas
-//        submitUserAnswers(quizId, userId, answers);
-        Gson gson = new Gson(); // o usa la instancia que tengas
+        Gson gson = new Gson();
         if (answers == null || answers.isEmpty()) {
             Toast.makeText(this, "No hay respuestas para enviar.", Toast.LENGTH_SHORT).show();
             return;
@@ -315,10 +284,9 @@ public class WonActivity extends AppCompatActivity {
                 .create(UserAnswerApi.class);
 
         for (UserAnswer answer : userAnswers) {
-            answer.setQuizId(quizId); // Asociar el quizId a cada respuesta
+            answer.setQuizId(quizId);
             answer.setUserId(userId);
 
-            // Muestra un log en JSON para ver EXACTAMENTE qué mandas:
             String json = gson.toJson(answer);
             Log.d("submitUserAnswers", "Enviando datos JSON: " + json);
             // Log detallado
@@ -349,17 +317,9 @@ public class WonActivity extends AppCompatActivity {
 
     private ArrayList<QuizQuestion> getQuizQuestions() {
         return (ArrayList<QuizQuestion>) getIntent().getSerializableExtra("quizQuestions");
-        //return ArrayList<QuizQuestion> quizQuestions = (ArrayList<QuizQuestion>)
-        //        getIntent().getSerializableExtra("quizQuestions");
     }
 
     private ArrayList<UserAnswer> getUserAnswers() {
         return (ArrayList<UserAnswer>) getIntent().getSerializableExtra("userAnswers");
     }
-
-//    ArrayList<QuizQuestion> quizQuestions = (ArrayList<QuizQuestion>)
-//            getIntent().getSerializableExtra("quizQuestions");
-//    // Lista de userAnswers
-//    ArrayList<UserAnswer> userAnswers = (ArrayList<UserAnswer>)
-//            getIntent().getSerializableExtra("userAnswers");
 }

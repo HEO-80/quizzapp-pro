@@ -3,6 +3,7 @@ package com.example.quizzapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,10 +25,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-        // Aquí se puede agregar cualquier inicialización adicional que sea necesaria
-        // para la lista de preguntas o cualquier otra cosa relacionada.
-    }
+ }
 
     @Override
     protected void onResume() {
@@ -58,8 +56,15 @@ public class SplashActivity extends AppCompatActivity {
             intent.putExtra("questionsList", (ArrayList<ModelClass>) filteredQuestionsList);
             startActivity(intent);
         } else {
-            // No hay preguntas disponibles para la categoría seleccionada,
-            // manejar el caso aquí
+            // No hay preguntas disponibles para la categoría seleccionada
+            Toast.makeText(SplashActivity.this, "No hay preguntas disponibles para esta categoría.", Toast.LENGTH_LONG).show();
+
+            // Redirigir al usuario a la selección de categorías
+            Intent intent = new Intent(SplashActivity.this, CategoryActivity.class);
+            startActivity(intent);
+
+            // Finalizar la actividad actual para evitar que el usuario vuelva atrás
+            finish();
         }
     }
 

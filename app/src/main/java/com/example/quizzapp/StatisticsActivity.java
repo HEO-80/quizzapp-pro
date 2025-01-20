@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.Api.ApiClient;
-import com.example.Api.CategoryStatsApi;
 import com.example.Api.QuizUserApi;
 import com.example.Entity.CategoryStats;
 import com.example.Entity.QuizUser;
@@ -182,34 +181,4 @@ public class StatisticsActivity extends AppCompatActivity {
 
         return new ArrayList<>(mapStats.values());
     }
-
-//    private void fetchCategoryStatistics(){
-//        Long userId = sessionManager.getUserId();
-//        if(userId == null){
-//            Toast.makeText(this, "Usuario no autenticado.", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        CategoryStatsApi categoryStatsApi = ApiClient.getRetrofitInstance(StatisticsActivity.this)
-//                .create(CategoryStatsApi.class);
-//        Call<List<CategoryStats>> call = categoryStatsApi.getCategoryStatistics(userId);
-//        call.enqueue(new Callback<List<CategoryStats>>() {
-//            @Override
-//            public void onResponse(Call<List<CategoryStats>> call, Response<List<CategoryStats>> response) {
-//                if(response.isSuccessful() && response.body() != null){
-//                    List<CategoryStats> stats = response.body();
-//                    categoryStatsAdapter.setCategoryStats(stats);
-//                } else {
-//                    Toast.makeText(StatisticsActivity.this, "Error al obtener las estadísticas por categoría", Toast.LENGTH_SHORT).show();
-//                    Log.e("StatisticsActivity", "Error: " + response.message());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<CategoryStats>> call, Throwable t) {
-//                Toast.makeText(StatisticsActivity.this, "Fallo de red al obtener las estadísticas por categoría", Toast.LENGTH_SHORT).show();
-//                Log.e("StatisticsActivity", "Fallo: " + t.getMessage());
-//            }
-//        });
-//    }
 }

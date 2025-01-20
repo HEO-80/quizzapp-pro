@@ -79,9 +79,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         if (loginResponse != null) {
 
-//                            String message = loginResponse.getMessage();
-//                            String username = loginResponse.getUsername();
-//                            Long userId = loginResponse.getUserId();
+
                             // (1) Tomamos datos devueltos por el servidor
                             String tokenDelServidor = loginResponse.getAccessToken();
                             String usernameDelServidor = loginResponse.getUsername();

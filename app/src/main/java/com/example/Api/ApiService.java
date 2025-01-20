@@ -16,7 +16,7 @@ import retrofit2.http.Path;
 
 public interface ApiService {
 
-    // Endpoint para obtener todos los usuarios (puede ser restringido)
+    // Endpoint para obtener todos los usuarios
     @GET("/api/users")
     Call<List<UserResponseDTO>> getAllUsers();
 

@@ -49,24 +49,11 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
     @Override
     public void onBindViewHolder(@NonNull QuizViewHolder holder, int position) {
 
-//        // Dentro de onBindViewHolder
-//        String formattedDate = "";
-//        try {
-//            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-//            SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
-//            Date date = inputFormat.parse(quiz.getStartTime());
-//            formattedDate = outputFormat.format(date);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-
 
         QuizUser quiz = quizzes.get(position);
         holder.tvQuizCategory.setText("Categoría: " + quiz.getCategory());
         // Asignar el Nombre del Usuario desde SessionManager
         String username = sessionManager.getUsername();
-//        holder.tvUsername.setText("Usuario: " + username);
-
 
         // Determinar si el quiz fue aprobado o suspendido
         String result = quiz.getScore() >= 10 ? "Aprobado" : "Suspendido";
@@ -88,15 +75,6 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
         }
 
         holder.tvTestDate.setText("Fecha: " + formattedDate);
-
-//        holder.tvTestDate.setText("Fecha: " + formattedDate);
-
-        // Configurar el ImageView basado en el puntaje
-//        if (quiz.getScore() >= 10) {
-//            holder.ivCorrectIndicator.setImageResource(R.drawable.ic_correct); // Drawable para correcto
-//        } else {
-//            holder.ivCorrectIndicator.setImageResource(R.drawable.ic_incorrect); // Drawable para incorrecto
-//        }
 
         holder.itemView.setOnClickListener(v -> {
             if(listener != null){

@@ -33,10 +33,7 @@ public class SessionManager {
     public String getToken() {
         return sharedPreferences.getString(KEY_TOKEN, null);
     }
-//    public void saveUserId(Long userId) {
-//        editor.putLong(KEY_USER_ID, userId);
-//        editor.apply();
-//    }
+
     /**
      * Verifica si el usuario es "guest".
      */

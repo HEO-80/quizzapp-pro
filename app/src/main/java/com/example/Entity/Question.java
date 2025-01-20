@@ -12,7 +12,7 @@ public class Question  implements Serializable {
     private String option3;
     private String option4;
 
-    // Getters y Setters
+
     // Constructor vacío
     public Question() {
     }

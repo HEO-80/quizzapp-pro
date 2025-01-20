@@ -14,7 +14,7 @@ public class StatisticsActivityTest {
 
     @Test
     public void testCalculateCategoryStatsLocally() {
-        // GIVEN: una lista de quizzes
+        // lista de quizzes
         List<QuizUser> quizzes = new ArrayList<>();
 
         quizzes.add(makeQuizUser("Programacion", 12));
@@ -23,16 +23,11 @@ public class StatisticsActivityTest {
         quizzes.add(makeQuizUser("Sistemas", 9));
         quizzes.add(makeQuizUser("Matematicas", 15));
 
-        // WHEN: llamas a un método hipotético que calcula estadísticas
         List<CategoryStats> stats = calculateCategoryStatsLocally(quizzes);
-
-        // THEN: verificas que stats contenga los valores correctos
-        // Esperas 3 categorías: Programacion(1 correct,1 incorrect), Sistemas(1 correct,1 incorrect), Matematicas(1 correct,0 incorrect)
 
         // Verificamos
         assertEquals(3, stats.size());
 
-        // Hallar la categoría Programacion en la lista
         CategoryStats programacion = findCategory("Programacion", stats);
         assertEquals(Integer.valueOf(1), programacion.getCorrectAnswers());
         assertEquals(Integer.valueOf(1), programacion.getIncorrectAnswers());
@@ -46,11 +41,8 @@ public class StatisticsActivityTest {
         assertEquals(Integer.valueOf(0), matematicas.getIncorrectAnswers());
     }
 
-    // Método local simulado (similar a "calculateCategoryStatsLocally" en StatisticsActivity)
     private List<CategoryStats> calculateCategoryStatsLocally(List<QuizUser> quizzes) {
-        // Aquí copias la misma lógica
-        // ...
-        // EJEMPLO simplificado:
+
         java.util.Map<String, CategoryStats> mapStats = new java.util.HashMap<>();
 
         for (QuizUser quiz : quizzes) {

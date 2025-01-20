@@ -9,13 +9,13 @@ import java.util.Date;
 // la hora y la puntuacion: score
 
 public class QuizUser implements Serializable {
-    private Long id; // Añade este campo
+    private Long id;
     private Long userId;
     private String category;
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     String startTime = sdf.format(new Date()); // Fecha y hora actual
-    String endTime = sdf.format(new Date()); // Cambia por el tiempo correcto
+    String endTime = sdf.format(new Date());
 
     private Integer score;
 

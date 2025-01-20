@@ -23,6 +23,31 @@ public class User {
         this.password = password;
     }
 
+    public  User(){
+
+    }
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
+    public Long  getId() {return id; }
+
+    public void setId(Long  id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
     // Getters y setters
     public String getUsername() {
         return username;
@@ -38,36 +63,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-
-        // Agrega más propiedades según tus necesidades
-
-    public  User(){
-
-    }
-
-    public User(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-    }
-
-
-// Agrega getters y setters para las propiedades
-
-    public Long  getId() {return id; }
-
-    public void setId(Long  id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public Date getFechaNacimiento() {

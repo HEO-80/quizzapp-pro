@@ -42,7 +42,7 @@ public class DashboardActivity extends AppCompatActivity {
     // Dentro de DashboardActivity
     private List<QuizQuestion> quizQuestions = new ArrayList<>(); // Lista para almacenar las respuestas
     private List<UserAnswer> userAnswers = new ArrayList<>();
-    private String selectedCategory = "General"; // Define una categoría predeterminada o configúrala dinámicamente
+    private String selectedCategory = "General"; // Define una categoría predeterminada
 
     TextView userNameDisplay;
     SessionManager sessionManager;
@@ -82,7 +82,7 @@ public class DashboardActivity extends AppCompatActivity {
                 currentQuestion = allQuestionsList.get(index);
                 setAllData(); // Configurar la primera pregunta
 
-                // AQUÍ: Registramos la hora de inicio del test
+                // Registramos la hora de inicio del test
                 quizStartTime = LocalDateTime.now();
                 Log.d("DashboardActivity", "Hora de inicio del test: " + quizStartTime.toString());
 
@@ -171,13 +171,8 @@ public class DashboardActivity extends AppCompatActivity {
         intent.putExtra("wrong", wrongCount);
         intent.putExtra("category", selectedCategory);
 
-        // 6. Poner extras de listas:
-        //    - userAnswers: la lista donde guardas las respuestas (tipo QuizQuestion).
-        //    - quizQuestions: si TUVIESAS otra lista distinta con las preguntas del quiz.
         intent.putExtra("quizQuestions", new ArrayList<>(quizQuestions));
 
-        // EJEMPLO: si tuvieras otra lista "quizQuestionsList"
-        // intent.putExtra("quizQuestions", new ArrayList<>(quizQuestionsList));
         intent.putExtra("userAnswers", new ArrayList<>(userAnswers));
 
         startActivity(intent);
@@ -230,41 +225,18 @@ public class DashboardActivity extends AppCompatActivity {
         if (!isOptionSelected) {
             processAnswer(currentQuestion.getOption1(), cardOA);
             isOptionSelected = true;
-//            if (currentQuestion.getOption1().equals(currentQuestion.getCorrectAnswer())) {
-//                Correct(cardOA);
-//                correctCount++;
-//            } else {
-//                Wrong(cardOA);
-//                wrongCount++;
-//            }
         }
     }
 
     public void OptionBclick(View view) {
         if (!isOptionSelected) {
             processAnswer(currentQuestion.getOption2(), cardOB);
-//            isOptionSelected = true;
-//            if (currentQuestion.getOption2().equals(currentQuestion.getCorrectAnswer())) {
-//                Correct(cardOB);
-//                correctCount++;
-//            } else {
-//                Wrong(cardOB);
-//                wrongCount++;
-//            }
         }
     }
 
     public void OptionCclick(View view) {
         if (!isOptionSelected) {
             processAnswer(currentQuestion.getOption3(), cardOC);
-//            isOptionSelected = true;
-//            if (currentQuestion.getOption3().equals(currentQuestion.getCorrectAnswer())) {
-//                Correct(cardOC);
-//                correctCount++;
-//            } else {
-//                Wrong(cardOC);
-//                wrongCount++;
-//            }
         }
     }
 
@@ -281,16 +253,6 @@ public class DashboardActivity extends AppCompatActivity {
 //            }
         }
     }
-
-
-    // Método donde se maneja la selección de respuesta
-//    private void submitAnswer(Long questionId, String userAnswer, boolean isCorrect) {
-//        Long userId = sessionManager.getUserId(); // Obtén el userId del usuario actual
-//        Long quizId = 1L; // ID del test actual (puedes generarlo dinámicamente)
-//
-//        QuizQuestion quizQuestion = new QuizQuestion(quizId, questionId, userId, userAnswer, isCorrect);
-//        userAnswers.add(quizQuestion); // Almacena la respuesta en la lista
-//    }
 
     private void processAnswer(String userAnswer, CardView selectedCard) {
         if (!isOptionSelected) {
@@ -311,7 +273,7 @@ public class DashboardActivity extends AppCompatActivity {
         Long userId = sessionManager.getUserId();
         Long quizId = null;// Ficticio por ahora, se sobrescribirá en WonActivity
 
-        // Construyes un UserAnswer en vez de un QuizQuestion
+        // Construye un UserAnswer en vez de un QuizQuestion
         UserAnswer userAnswerObj = new UserAnswer(quizId, questionId, userId, userAnswer, isCorrect);
         userAnswers.add(userAnswerObj);
 

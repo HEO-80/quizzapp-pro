@@ -17,46 +17,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-<!--            &lt;!&ndash; Barra de herramientas con botón de salida &ndash;&gt;-->
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/toolbar"-->
-<!--                android:background="#FFFEFE"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="40dp">-->
-
-<!--                &lt;!&ndash; Opción 1: Usando un Button &ndash;&gt;-->
-<!--                <Button-->
-<!--                    android:id="@+id/btn_exit"-->
-<!--                    android:layout_width="48dp"-->
-<!--                    android:layout_height="32dp"-->
-<!--                    android:text="Exit"-->
-<!--                    android:layout_alignParentEnd="true"-->
-<!--                    android:layout_marginEnd="10dp"-->
-<!--                    android:textColor="@android:color/black"-->
-<!--                    android:textSize="16sp"-->
-<!--                    android:background="?attr/selectableItemBackground"-->
-<!--                    android:padding="4dp" />-->
-
-<!--                &lt;!&ndash; Opción 2: Usando un TextView (si prefieres) &ndash;&gt;-->
-<!--                &lt;!&ndash;-->
-<!--                <TextView-->
-<!--                    android:id="@+id/ic_exit"-->
-<!--                    android:layout_width="48dp"-->
-<!--                    android:layout_height="32dp"-->
-<!--                    android:text="Exit"-->
-<!--                    android:gravity="center"-->
-<!--                    android:layout_alignParentEnd="true"-->
-<!--                    android:layout_marginEnd="10dp"-->
-<!--                    android:textColor="@android:color/black"-->
-<!--                    android:textSize="16sp"-->
-<!--                    android:clickable="true"-->
-<!--                    android:focusable="true"-->
-<!--                    android:background="?attr/selectableItemBackground"-->
-<!--                    android:padding="4dp" />-->
-<!--                &ndash;&gt;-->
-<!--            </RelativeLayout>-->
-
             <!-- res/layout/activity_statistics.xml -->
             <RelativeLayout
                 android:id="@+id/toolbar"

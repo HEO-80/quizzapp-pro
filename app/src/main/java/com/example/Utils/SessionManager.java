@@ -18,18 +18,9 @@ public class SessionManager {
         editor = sharedPreferences.edit();
     }
 
-    /**
-     * Guarda las credenciales del usuario en SharedPreferences.
-     */
-//    public void saveUser(String username, String password, Long userId) {
-//        editor.putString(KEY_USERNAME, username);
-//        editor.putString(KEY_PASSWORD, password);
-//        editor.putLong(KEY_USER_ID, userId); // Nuevo: almacenar el ID del usuario
-//        editor.apply();
-//    }
     public void saveUser(String username, String password, Long userId) {
         editor.putString(KEY_USERNAME, username);
-        editor.putString(KEY_PASSWORD, password); // Si no necesitas guardar la contraseña, puedes omitir esto
+        editor.putString(KEY_PASSWORD, password);
         editor.putLong(KEY_USER_ID, userId); // Almacenar el ID del usuario
         editor.apply();
     }

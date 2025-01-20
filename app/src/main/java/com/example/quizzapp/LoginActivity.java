@@ -10,12 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.Api.ApiClient;
 import com.example.Api.ApiService;
+import com.example.Entity.LoginResponseDTO;
 import com.example.Entity.User;
 import com.example.Utils.SessionManager;
 
 import org.json.JSONObject;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etUsername, etPassword;
     private Button btnLoginSubmit, btnRegisterSubmit;
     private SessionManager sessionManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginSubmit.setOnClickListener(v -> {
             String username = etUsername.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
-
-
-            // Suponiendo que la autenticación es exitosa y obtienes un userId
-            Long userId = 101L; // Ejemplo estático, reemplaza con el ID real del usuario
 
 
             if (!username.isEmpty() && !password.isEmpty()) {
@@ -65,58 +62,70 @@ public class LoginActivity extends AppCompatActivity {
      * Realiza la autenticación del usuario utilizando Retrofit.
      */
     private void loginUser(String username, String password) {
-        ApiService apiService = ApiClient.getRetrofitInstance().create(ApiService.class);
+        ApiService apiService = ApiClient.getRetrofitInstance(LoginActivity.this)
+                                            .create(ApiService.class);
 
         // Crear un objeto User con las propiedades relevantes
         User user = new User(username, password);
 
 
         // Llamar al endpoint de login con Retrofit
-        apiService.login(user).enqueue(new Callback<ResponseBody>() {
+        apiService.login(user).enqueue(new Callback<LoginResponseDTO>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {
                 if (response.isSuccessful()) {
-                    try {
-                        // Convertir la respuesta a JSON y obtener el nombre de usuario
-                        String responseBody = response.body().string();
-                        JSONObject jsonResponse = new JSONObject(responseBody);
-                        String username = jsonResponse.getString("username");
-                        long userId = jsonResponse.getLong("userId"); // Asegúrate de que esto está disponible en el servidor
 
-                        // Guardar el nombre de usuario en el SessionManager
-                        sessionManager.saveUser(username, "", userId); // La contraseña puede estar vacía si no se necesita
-//                        sessionManager.saveUserId(userId); // Guarda el userId aquí
+                        LoginResponseDTO loginResponse = response.body();
 
-                        // Procesar la respuesta en caso de éxito
-                    Toast.makeText(LoginActivity.this, "Login exitoso", Toast.LENGTH_SHORT).show();
-                    // Aquí puedes guardar la sesión del usuario si es necesario
+                        if (loginResponse != null) {
 
-                        // Regresar a la pantalla inicial
-                        Intent intent = new Intent(LoginActivity.this, StartActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        finish();
+//                            String message = loginResponse.getMessage();
+//                            String username = loginResponse.getUsername();
+//                            Long userId = loginResponse.getUserId();
+                            // (1) Tomamos datos devueltos por el servidor
+                            String tokenDelServidor = loginResponse.getAccessToken();
+                            String usernameDelServidor = loginResponse.getUsername();
+                            Long userIdDelServidor = loginResponse.getUserId();
+                            // (1) Tomar el token que viene desde el servidor
+                            String token = loginResponse.getAccessToken(); // <- NUEVO
+                            // (2) Guardamos el token en SessionManager
+                            sessionManager.saveToken(tokenDelServidor);
 
-                    } catch (Exception e) {
-                        Toast.makeText(LoginActivity.this, "Error procesando la respuesta", Toast.LENGTH_SHORT).show();
-                    }
+                            // (3) Guardamos la info del usuario en SessionManager (el email es un placeholder)
+                            sessionManager.saveUser(usernameDelServidor, "[email protected]", userIdDelServidor);
 
+
+                            Toast.makeText(LoginActivity.this, "Login exitoso", Toast.LENGTH_SHORT).show();
+
+                            // Navegar a la pantalla inicial
+                            Intent intent = new Intent(LoginActivity.this, StartActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this,
+                                    "Error: Respuesta vacía del servidor", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
                 } else {
-
-                    // Manejar el caso de error en la respuesta
+                    // Respuesta HTTP fuera del rango 2xx (400, 401, 500, etc.)
                     try {
+                        // Si el servidor envía algo en el body de error
                         String errorBody = response.errorBody().string();
                         JSONObject jsonObject = new JSONObject(errorBody);
-                        String errorMessage = jsonObject.getString("message");
-                        Toast.makeText(LoginActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
-                    } catch (Exception e){
-                        Toast.makeText(LoginActivity.this, "Error durante el login", Toast.LENGTH_SHORT).show();
+                        String errorMessage = jsonObject.optString("message", "Error desconocido");
+
+                        Toast.makeText(LoginActivity.this,
+                                "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(LoginActivity.this,
+                                "Error durante el login", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<LoginResponseDTO> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

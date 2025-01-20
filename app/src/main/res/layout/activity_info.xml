@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".InfoActivity">
+
+    <!-- Barra de herramientas con botón de salida -->
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:background="#FFFEFE"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:id="@+id/ic_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exit"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <!-- Separación -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="80dp" />
+
+    <!-- Título de la Pantalla -->
+<TextView
+android:id="@+id/tvInfoTitle"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Cómo Usar QuizApp"
+android:textSize="24sp"
+android:textStyle="bold"
+android:textColor="#800080"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="44dp" />
+
+
+    <ScrollView
+        android:id="@+id/scrollViewInfo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tvInfoTitle"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Instrucciones de Uso -->
+            <TextView
+                android:id="@+id/tvInfoInstructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Bienvenido a QuizApp. Sigue estos pasos para comenzar:"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <!-- Lista de Pasos -->
+            <TextView
+                android:id="@+id/tvInfoSteps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. **Registrar**: Si no tienes una cuenta, regístrate creando un nombre de usuario y una contraseña.\n2. **Iniciar Sesión**: Si ya estás registrado, inicia sesión con tus credenciales.\n3. **Realizar Tests**: Elige entre un test general o selecciona una categoría específica para hacer un test de 20 preguntas sin límite de tiempo.\n4. **Resultados**: Al finalizar, tus resultados se guardarán si has iniciado sesión. Si tomas el test como invitado, los datos no se guardarán."
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <!-- Sección de Futuras Actualizaciones -->
+            <TextView
+                android:id="@+id/tvInfoFuture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\n**Próximamente:**\n- Límites de tiempo para los tests.\n- Posibilidad de elegir la cantidad de preguntas.\n- Registro de fallos para mejorar tus conocimientos."
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botón de Regresar -->
+<ImageButton
+android:id="@+id/btnBackInfo"
+android:layout_width="48dp"
+android:layout_height="48dp"
+android:layout_alignParentTop="true"
+android:layout_alignParentStart="true"
+android:background="?attr/selectableItemBackgroundBorderless"
+android:src="@drawable/back"
+    android:contentDescription="Regresar" />
+
+    </RelativeLayout>

@@ -17,12 +17,12 @@ public class QuizUser implements Serializable {
     String startTime = sdf.format(new Date()); // Fecha y hora actual
     String endTime = sdf.format(new Date()); // Cambia por el tiempo correcto
 
-    private int score;
+    private Integer score;
 
     // Constructor sin argumentos
     public QuizUser() {}
     // Constructor
-    public QuizUser(Long userId, String category, String startTime, String endTime, int score) {
+    public QuizUser(Long userId, String category, String startTime, String endTime, Integer score) {
         this.userId = userId;
         this.category = category;
         this.startTime = startTime;
@@ -71,11 +71,11 @@ public class QuizUser implements Serializable {
         this.endTime = endTime;
     }
 
-    public int getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(Integer score) {
         this.score = score;
     }
 }

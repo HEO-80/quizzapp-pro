@@ -12,6 +12,6 @@ import retrofit2.http.Path;
 public interface CategoryStatsApi {
 
     // Endpoint para obtener estadísticas por categoría
-    @GET("api/quizzes/user/{userId}/statistics")
+    @GET("quiz-users/user/{userId}/statistics")
     Call<List<CategoryStats>> getCategoryStatistics(@Path("userId") Long userId);
 }

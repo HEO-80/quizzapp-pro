@@ -119,6 +119,20 @@
                 android:textColor="@color/white"
                 android:textSize="24sp" />
 
+            <!-- Botón de Información -->
+            <ImageButton
+                android:id="@+id/btnInfo"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_40sdp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_info"
+            android:contentDescription="Información" />
+
             <!-- Banner de Google Ads -->
 <!--            <com.google.android.gms.ads.AdView-->
 <!--                android:id="@+id/adView"-->

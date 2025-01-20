@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.Api.ApiClient;
 import com.example.Api.ApiService;
 import com.example.Entity.User;
+import com.example.Entity.UserResponseDTO;
 import com.example.Utils.SessionManager;
 
 import org.json.JSONObject;
@@ -93,15 +94,16 @@ public class RegisterActivity extends AppCompatActivity {
      * Realizar la solicitud de registro al backend.
      */
     private void registerUser(String username, String password, String email) {
-        ApiService apiService = ApiClient.getRetrofitInstance().create(ApiService.class);
+        ApiService apiService = ApiClient.getRetrofitInstance(RegisterActivity.this)
+                .create(ApiService.class);
 
         // Crear un objeto User con las propiedades relevantes
         User user = new User(username, password, email);
 
         // Llamar al endpoint de registro con Retrofit
-        apiService.createUser(user).enqueue(new Callback<User>() {
+        apiService.createUser(user).enqueue(new Callback<UserResponseDTO>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<UserResponseDTO> call, Response<UserResponseDTO> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(RegisterActivity.this, "Registro exitoso. Puedes iniciar sesión ahora.", Toast.LENGTH_SHORT).show();
                     finish(); // Cerrar la actividad y volver al login
@@ -125,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<UserResponseDTO> call, Throwable t) {
                 Toast.makeText(RegisterActivity.this, "Fallo de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

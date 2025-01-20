@@ -229,7 +229,8 @@ public class WonActivity extends AppCompatActivity {
         quizUser.setEndTime(endTimeFormatted);
 
         // Llamar al API
-        QuizUserApi quizUserApi = ApiClient.getRetrofitInstance().create(QuizUserApi.class);
+        QuizUserApi quizUserApi = ApiClient.getRetrofitInstance(WonActivity.this)
+                .create(QuizUserApi.class);
         quizUserApi.createQuizUser(quizUser).enqueue(new Callback<QuizUser>() {
             @Override
             public void onResponse(Call<QuizUser> call, Response<QuizUser> response) {
@@ -261,7 +262,8 @@ public class WonActivity extends AppCompatActivity {
 
 
     private void submitQuizQuestions(Long quizId, Long userId, List<QuizQuestion> quizQuestions) {
-        QuizQuestionApi quizQuestionApi = ApiClient.getRetrofitInstance().create(QuizQuestionApi.class);
+        QuizQuestionApi quizQuestionApi = ApiClient.getRetrofitInstance(WonActivity.this)
+                .create(QuizQuestionApi.class);
         Gson gson = new Gson(); // o usa la instancia que tengas
 
         for (QuizQuestion question : quizQuestions) {
@@ -309,7 +311,8 @@ public class WonActivity extends AppCompatActivity {
             return;
         }
 
-        UserAnswerApi userAnswerApi = ApiClient.getRetrofitInstance().create(UserAnswerApi.class);
+        UserAnswerApi userAnswerApi = ApiClient.getRetrofitInstance(WonActivity.this)
+                .create(UserAnswerApi.class);
 
         for (UserAnswer answer : userAnswers) {
             answer.setQuizId(quizId); // Asociar el quizId a cada respuesta
